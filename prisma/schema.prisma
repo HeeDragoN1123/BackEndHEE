@@ -9,3 +9,112 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+
+//회원가입 테이블 정의
+model Users {
+  userId          Int   @id @default(autoincrement()) @map("userId")
+  name        String    @unique @map("name")
+  email       String    @unique @map("email")
+  password    String    @map("password")
+  avatarUrl   String    @map("avatarUrl")
+  description String    @map("description")
+  githubUrl   String    @map("githubUrl")
+  linkedinUrl String    @map("linkedinUrl")
+  createdAt   DateTime  @default(now()) @map("createdAt")
+  //updatedAt   DateTime  @updatedAt @map("updatedAt")
+
+
+  //관계 설정
+  Projects      Projects[]        
+  ViewsLog      ViewsLog[]
+  Likes         Likes []         
+  Bookmarks     Bookmarks [] 
+
+@@map("Users")
+
+}
+
+
+// 프로젝트 테이블 정의
+
+model Projects {
+  projectId   Int       @id @default(autoincrement()) @map("projectId")
+  title       String    @map("title")
+  description String    @map("description")    //@db.Text
+  image       String    @map("image")
+  liveSiteUrl String    @map("liveSiteUrl")
+  githubUrl   String    @map("githubUrl")
+  category    String    @map("category")
+  createdAt   DateTime  @default(now()) @map("createdAt")
+  //updatedAt DateTime  @updatedAt @map("updatedAt")
+
+  //외래키
+  //createdBy   Int       @map("createdBy")
+  UserId        Int       @map("userId")
+
+
+  // 관계 설정
+  Users Users @relation(fields: [UserId], references: [userId],onDelete: Cascade)
+  ViewsLog ViewsLog[]
+  Likes   Likes []
+  Bookmarks Bookmarks []   
+  
+  @@map("Projects")
+}
+
+
+//뷰로그 테이블 정의
+model ViewsLog {
+  
+  viewsLogId         Int       @id @default(autoincrement()) @map("viewsLogId")
+  viewedAt    DateTime  @default(now()) @map("createdAt")
+
+  // 외래키
+  ProjectId  Int       @map("projectsId")
+  UserId        Int       @map("userId")
+ 
+ 
+ // 관계 설정
+  Projects    Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
+  Users       Users     @relation(fields: [UserId], references: [userId],onDelete: Cascade)
+
+ @@map("ViewsLog")
+}
+
+
+
+//좋아요 테이블 정의
+model Likes {
+  likeId        Int       @id @default(autoincrement()) @map("likeId")
+  createdAt     DateTime  @default(now()) @map("createdAt")
+
+  // 외래 키
+  ProjectId    Int       @map("projectId")
+  UserId        Int       @map("userId")
+
+  // 관계 설정
+  Users         Users     @relation(fields: [UserId], references: [userId], onDelete: Cascade)
+  Projects      Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
+
+  @@map("Likes")
+}
+
+
+
+
+//북마크 테이블 정의 
+model Bookmarks {
+  bookmarksId   Int       @id @default(autoincrement()) @map("bookmarksId")
+  createdAt     DateTime  @default(now()) @map("createdAt")
+
+  // 외래 키
+  ProjectId    Int       @map("projectId")
+  UserId        Int       @map("userId")
+
+  // 관계 설정
+  Users         Users     @relation(fields: [UserId], references: [userId], onDelete: Cascade)
+  Projects      Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
+
+  @@map("Bookmarks")
+}
