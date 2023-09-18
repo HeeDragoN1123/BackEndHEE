@@ -59,8 +59,6 @@ model Projects {
   viewsLogs ViewLogs[]
   likes     Likes []
   bookmarks Bookmarks []   
-  
-
 }
 
 
