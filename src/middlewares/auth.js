@@ -5,7 +5,7 @@ import { prisma } from "../utils/prisma/index.js";
 /* 액세스토큰을 생성하는 함수 */
 const createAccessToken = async (user) => {
   const accessToken = jwt.sign({ name: user.name }, process.env.SECRET_KEY, {
-    expiresIn: "10s",
+    expiresIn: "10h",
   });
 
   return accessToken;
@@ -14,7 +14,7 @@ const createAccessToken = async (user) => {
 /* 리프레시토큰을 생성하는 함수 */
 const createRefreshToken = async (user) => {
   const refreshToken = jwt.sign({ name: user.name }, process.env.SECRET_KEY, {
-    expiresIn: "15s",
+    expiresIn: "1d",
   });
 
   return refreshToken;
@@ -39,8 +39,8 @@ const validateAccessToken = async (req, res, next) => {
       .json({ errorMessage: "Access Token이 만료되었습니다" });
   }
 
+  /* 토큰 정보에 담긴 사용자가 서버에 있는지 검증 */
   const { name } = jwt.verify(accessToken, process.env.SECRET_KEY);
-  console.log(name);
 
   const user = await prisma.users.findFirst({
     where: { name },

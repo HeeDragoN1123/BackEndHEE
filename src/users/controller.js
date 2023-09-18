@@ -1,4 +1,5 @@
 import { UserService } from "./service.js";
+import { signUpSchema, loginSchema } from "../utils/joi/index.js";
 
 export class UserController {
   userService = new UserService();
@@ -14,7 +15,7 @@ export class UserController {
         description,
         githubUrl,
         linkedinUrl,
-      } = req.body;
+      } = await signUpSchema.validateAsync(req.body);
 
       /* 유니크 키 name, email로 중복유저 검증 */
       await this.userService.findUserByName(name);
@@ -41,7 +42,7 @@ export class UserController {
   /* 로그인 메서드 */
   login = async (req, res, next) => {
     try {
-      const { name, password } = req.body;
+      const { name, password } = await loginSchema.validateAsync(req.body);
 
       // name, password에 해당하는 유저 정보 확인
       const {data, accessToken, refreshToken} = await this.userService.loginConfirm(name, password);
