@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 
- router.use('/post', projectRouter);
+ router.use('/project', projectRouter);
 
 
 export default router

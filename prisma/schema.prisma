@@ -41,7 +41,8 @@ model Projects {
   id   Int       @id @default(autoincrement())
   title       String    
   description String   
-  image       String    
+  image       String
+  thumbnail   String    
   liveSiteUrl String    
   githubUrl   String    
   category    String    
