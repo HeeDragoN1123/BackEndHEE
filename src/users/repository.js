@@ -1,7 +1,8 @@
 import { prisma } from "../utils/prisma/index.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 export class UserRepository {
+  //DB에서 name, email로 중복데이터 확인
   findUserByName = async (name) => {
     const user = await prisma.users.findFirst({
       where: { name },
@@ -24,7 +25,9 @@ export class UserRepository {
     githubUrl,
     linkedinUrl
   ) => {
-    const hashedpassword = await bcrypt.hash(password, 10)
+
+    // body데이터 DB에 저장(비밀번호는 암호화)
+    const hashedpassword = await bcrypt.hash(password, 10);
     const user = await prisma.users.create({
       data: {
         name,
@@ -38,5 +41,15 @@ export class UserRepository {
     });
 
     return user;
+  };
+
+  // 해당 user name에 refresh토큰 저장
+  updateToken = async (name, refreshToken) => {
+    await prisma.users.update({
+      where: { name },
+      data: {
+        refreshToken: refreshToken,
+      },
+    });
   };
 }
