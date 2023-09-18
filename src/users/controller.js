@@ -31,7 +31,6 @@ export class UserController {
         githubUrl,
         linkedinUrl
       );
-      console.log(data);
 
       res.status(201).json({ message: data });
     } catch (err) {
@@ -97,7 +96,6 @@ export class UserController {
   getPost = async (req, res, next) => {
     try {
       const { userId } = req.params;
-      
       await this.userService.getUserById(userId);
 
       const workedProject = await this.userService.getPostByUserId(userId);
