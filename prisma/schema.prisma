@@ -1,6 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// cuid 쓰기 uuid  대체
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,25 +13,24 @@ datasource db {
 
 //회원가입 테이블 정의
 model Users {
-  userId          Int   @id @default(autoincrement()) @map("userId")
-  name        String    @unique @map("name")
-  email       String    @unique @map("email")
-  password    String    @map("password")
-  avatarUrl   String    @map("avatarUrl")
-  description String    @map("description")
-  githubUrl   String    @map("githubUrl")
-  linkedinUrl String    @map("linkedinUrl")
-  createdAt   DateTime  @default(now()) @map("createdAt")
+  id          Int   @id @default(autoincrement())
+  name        String    @unique 
+  email       String    @unique 
+  password    String    
+  avatarUrl   String    
+  description String    
+  githubUrl   String    
+  linkedinUrl String    
+  createdAt   DateTime  @default(now()) 
   //updatedAt   DateTime  @updatedAt @map("updatedAt")
 
 
   //관계 설정
-  Projects      Projects[]        
-  ViewsLog      ViewsLog[]
-  Likes         Likes []         
-  Bookmarks     Bookmarks [] 
+  projects      Projects[]        
+  viewLogs      ViewLogs[]
+  likes         Likes []         
+  bookmarks     Bookmarks [] 
 
-@@map("Users")
 
 }
 
@@ -39,82 +38,81 @@ model Users {
 // 프로젝트 테이블 정의
 
 model Projects {
-  projectId   Int       @id @default(autoincrement()) @map("projectId")
-  title       String    @map("title")
-  description String    @map("description")    //@db.Text
-  image       String    @map("image")
-  liveSiteUrl String    @map("liveSiteUrl")
-  githubUrl   String    @map("githubUrl")
-  category    String    @map("category")
-  createdAt   DateTime  @default(now()) @map("createdAt")
+  id   Int       @id @default(autoincrement())
+  title       String    
+  description String   
+  image       String    
+  liveSiteUrl String    
+  githubUrl   String    
+  category    String    
+  createdAt   DateTime  @default(now()) 
   //updatedAt DateTime  @updatedAt @map("updatedAt")
 
   //외래키
-  //createdBy   Int       @map("createdBy")
-  UserId        Int       @map("userId")
+  userId        Int       
 
 
   // 관계 설정
-  Users Users @relation(fields: [UserId], references: [userId],onDelete: Cascade)
-  ViewsLog ViewsLog[]
-  Likes   Likes []
-  Bookmarks Bookmarks []   
+  users Users @relation(fields: [userId], references: [id],onDelete: Cascade)
   
-  @@map("Projects")
+  viewsLogs ViewLogs[]
+  likes     Likes []
+  bookmarks Bookmarks []   
+  
+
 }
 
 
 //뷰로그 테이블 정의
-model ViewsLog {
+model ViewLogs {
   
-  viewsLogId         Int       @id @default(autoincrement()) @map("viewsLogId")
-  viewedAt    DateTime  @default(now()) @map("createdAt")
+  id          Int       @id @default(autoincrement())
+  viewedAt    DateTime  @default(now()) 
 
   // 외래키
-  ProjectId  Int       @map("projectsId")
-  UserId        Int       @map("userId")
+  projectId     Int       
+  userId        Int       
  
  
  // 관계 설정
-  Projects    Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
-  Users       Users     @relation(fields: [UserId], references: [userId],onDelete: Cascade)
+  projects    Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  users       Users     @relation(fields: [userId], references: [id],onDelete: Cascade)
 
- @@map("ViewsLog")
+
 }
 
 
 
 //좋아요 테이블 정의
 model Likes {
-  likeId        Int       @id @default(autoincrement()) @map("likeId")
-  createdAt     DateTime  @default(now()) @map("createdAt")
+  id        Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now()) 
 
   // 외래 키
-  ProjectId    Int       @map("projectId")
-  UserId        Int       @map("userId")
+  projectId     Int       
+  userId        Int      
 
   // 관계 설정
-  Users         Users     @relation(fields: [UserId], references: [userId], onDelete: Cascade)
-  Projects      Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
+  users         Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects      Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  @@map("Likes")
+
 }
-
 
 
 
 //북마크 테이블 정의 
 model Bookmarks {
-  bookmarksId   Int       @id @default(autoincrement()) @map("bookmarksId")
-  createdAt     DateTime  @default(now()) @map("createdAt")
+  id   Int       @id @default(autoincrement())
+  createdAt     DateTime  @default(now()) 
 
   // 외래 키
-  ProjectId    Int       @map("projectId")
-  UserId        Int       @map("userId")
+  projectId    Int      
+  userId        Int      
 
   // 관계 설정
-  Users         Users     @relation(fields: [UserId], references: [userId], onDelete: Cascade)
-  Projects      Projects  @relation(fields: [ProjectId], references: [projectId], onDelete: Cascade)
+  users         Users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projects      Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  @@map("Bookmarks")
+
 }
