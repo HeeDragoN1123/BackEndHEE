@@ -1,7 +1,7 @@
 import express from "express";
 import router from "./index.js";
 import dotenv from "dotenv";
-import errorhandler from "./middlewares/errorhandler.js";
+import { errorhandler } from "./middlewares/errorhandler.js";
 import log from "./middlewares/log.js";
 import cookieParser from "cookie-parser";
 
@@ -9,7 +9,6 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
-
 
 app.use(log);
 app.use(express.json());
