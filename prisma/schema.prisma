@@ -22,6 +22,7 @@ model Users {
   githubUrl   String    
   linkedinUrl String    
   createdAt   DateTime  @default(now()) 
+  refreshToken String? @db.Text
   //updatedAt   DateTime  @updatedAt @map("updatedAt")
 
 
