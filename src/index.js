@@ -1,12 +1,14 @@
 import express from 'express';
 import projectRouter from './projects/router.js';
+import userRouter from "../src/users/router.js"
 
 
 const router = express.Router();
 
 
-
- router.use('/post', projectRouter);
+router.use('/', userRouter)
+router.use('/user', userRouter)
+router.use('/post', projectRouter);
 
 
 export default router
