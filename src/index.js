@@ -7,6 +7,7 @@ const router = express.Router();
 
 
 router.use('/', userRouter)
+router.use('/user', userRouter)
 router.use('/post', projectRouter);
 
 

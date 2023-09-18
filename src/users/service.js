@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 export class UserService {
   userRepository = new UserRepository();
 
-  // name, email에 해당하는 유저가 존재하면 에러메시지를 던짐
+  /* name, email에 해당하는 유저가 존재하면 에러메시지를 던짐 */
   findUserByName = async (name) => {
     const existName = await this.userRepository.findUserByName(name);
     if (existName) throw new CustomError(412, "이미 가입된 유저입니다");
@@ -36,37 +36,73 @@ export class UserService {
       linkedinUrl
     );
 
-    // response 메세지 반환
+    /* response 메세지 반환 */
     return {
       name: user.name,
       createdAt: user.createdAt,
     };
   };
 
-  // 회원가입, 비밀번호 일치여부 확인
-  login = async (name, password) => {
+  /* 회원가입, 비밀번호 일치여부 확인 */
+  loginConfirm = async (name, password) => {
     const user = await this.userRepository.findUserByName(name);
     if (!user) throw new CustomError(404, "존재하지 않는 유저입니다");
 
     if (!(await bcrypt.compare(password, user.password)))
       throw new CustomError(400, "비밀번호가 일치하지 않습니다");
 
-    // 액세스, 리프레시 토큰을 생성해서 유저정보를 전달
+    /* 액세스, 리프레시 토큰을 생성해서 유저정보를 전달 */
     const accessToken = await createAccessToken(user);
     const refreshToken = await createRefreshToken(user);
 
-    // 리프레시 토큰을 유저 정보에 저정하는 메서드
+    /* 리프레시 토큰을 유저 정보에 저정하는 메서드 */
     await this.userRepository.updateToken(name, refreshToken);
 
     return {
-      Token: jwt.verify(accessToken, process.env.SECRET_KEY),
-      user: {
-        name: user.name,
-        email: user.email,
-        createdAt: user.createdAt,
+      data: {
+        Token: jwt.verify(accessToken, process.env.SECRET_KEY),
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          createdAt: user.createdAt,
+        },
       },
       accessToken,
       refreshToken,
+    };
+  };
+
+  /* 서버에서 발급한 refreshToken이 맞는지 검증 */
+  validateToken = async (refreshToken) => {
+    const { name } = jwt.verify(refreshToken, process.env.SECRET_KEY);
+
+    /* 토큰에 저장된 유저정보 확인 */
+    const user = await this.userRepository.validateToken(name);
+
+    if (!user || refreshToken !== user.refreshToken)
+      throw new CustomError(401, "리프레쉬 토큰 인증에 실패하였습니다");
+
+    const accessToken = jwt.sign({ name: name }, process.env.SECRET_KEY, {
+      expiresIn: 3600,
+    });
+
+    return accessToken;
+  };
+
+  /* req.params값을 상위 메서드에 전달*/
+  getUserById = async (userId) => {
+    const user = await this.userRepository.getUserById(userId);
+    if (!user) throw new CustomError(403, "해당 유저가 존재하지 않습니다");
+
+    return {
+      id: userId,
+      name: user.name,
+      email: user.email,
+      avatarUrl: user.avatarUrl,
+      githubUrl: user.githubUrl,
+      linkedinUrl: user.linkedinUrl,
+      createdAt: user.createdAt,
     };
   };
 }
