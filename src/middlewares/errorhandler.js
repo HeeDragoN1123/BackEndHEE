@@ -1,7 +1,7 @@
 import { CustomError } from "../errors/customError.js";
 
-export default function (err, req, res, next) {
-    console.error(`${req.method} ${req.originalUrl} : ${err}`);
+export function errorhandler (err, req, res, next) {
+    console.error(`${req.method} ${req.originalUrl} : ${err}`)
 
   if (err instanceof CustomError) {
     return res.status(err.status).json({ errorMessage: err.message })
