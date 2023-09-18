@@ -1,4 +1,5 @@
 import { prisma } from "../utils/prisma/index.js";
+import bcrypt from "bcrypt"
 
 export class UserRepository {
   findUserByName = async (name) => {
@@ -23,12 +24,13 @@ export class UserRepository {
     githubUrl,
     linkedinUrl
   ) => {
+    const hashedpassword = await bcrypt.hash(password, 10)
     const user = await prisma.users.create({
       data: {
         name,
         avatarUrl,
         email,
-        password,
+        password: hashedpassword,
         description,
         githubUrl,
         linkedinUrl,
