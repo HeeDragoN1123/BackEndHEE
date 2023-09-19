@@ -107,17 +107,38 @@ export class UserController {
   };
   updateUserInfo = async (req, res, next) => {
     try {
-      const {email, avatarUrl, githubUrl, linkedinUrl} = req.body
-      const {userId} = req.params
-      const userInfoId = req.user.id
+      const { email, avatarUrl, githubUrl, linkedinUrl } = req.body;
+      const { userId } = req.params;
+      const userInfoId = req.user.id;
 
       await this.userService.getUserById(userId);
 
-      const userInfo = await this.userService.updateUserInfo(email, avatarUrl, githubUrl,linkedinUrl, userId, userInfoId)
+      const userInfo = await this.userService.updateUserInfo(
+        email,
+        avatarUrl,
+        githubUrl,
+        linkedinUrl,
+        userId,
+        userInfoId
+      );
 
-      return res.status(200).json(userInfo)
+      return res.status(200).json(userInfo);
     } catch (err) {
-      next(err)
+      next(err);
     }
-  }
+  };
+
+  getUserLikedProject = async (req, res, next) => {
+    try {
+      const userId = req.user.id
+
+      const projects = await this.UserController.getUserLikedProject(userId)
+
+      console.log(projects)
+
+      return res.status(200).json(projects)
+    } catch (err) {
+      next(err);
+    }
+  };
 }

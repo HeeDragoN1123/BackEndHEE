@@ -93,11 +93,13 @@ export class ProjectRepository {
 
   /* 프로젝트id 조회 */
   findProject = async (projectId) => {
+    
     const project = await this.prisma.projects.findUnique({
       where: {
         id: projectId,
       },
     });
+    
     return project;
   };
 

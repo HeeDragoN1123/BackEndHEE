@@ -64,7 +64,6 @@ export class ProjectService {
   /* 프로젝트 상세 조회 */
   getProjectById = async (projectId) => {
     const project = await this.projectRepository.getProjectById(projectId);
-
     if (!project) throw new CustomError(404, "게시글이 존재하지 않습니다");
 
     return {

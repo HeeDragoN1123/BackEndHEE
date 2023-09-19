@@ -91,16 +91,50 @@ export class UserRepository {
     return post;
   };
 
-  updateUserInfo = async (email, avatarUrl, githubUrl,linkedinUrl, userId) => {
+  updateUserInfo = async (email, avatarUrl, githubUrl, linkedinUrl, userId) => {
     const user = await prisma.users.update({
-      where: {id: +userId},
+      where: { id: +userId },
       data: {
         email,
         avatarUrl,
         githubUrl,
-        linkedinUrl
-      }
-    })
-    return user
-  }
+        linkedinUrl,
+      },
+    });
+    return user;
+  };
+
+  getUserLikedProject = async (userId) => {
+    const projects = await prisma.projects.findMany({
+      where: {
+        select: {
+          likes: {
+            id: +userId,
+          },
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        image: true,
+        category: true,
+        createdAt: true,
+        users: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            viewsLogs: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+    return projects
+  };
 }

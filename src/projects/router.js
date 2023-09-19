@@ -30,5 +30,4 @@ router.delete('/:projectId', validateAccessToken, projectController.deleteProjec
 /* 카테고리별 게시글 조회 */
 router.get("/category/:categoryId", projectController.getProjectByCategory)
 
-
 export default router;

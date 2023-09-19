@@ -138,4 +138,27 @@ export class UserService {
       createdAt: userInfo.createdAt
     }
   }
+
+  getUserLikedProject = async (userId) => {
+    const projects = await this.userRepository.getUserLikedProject(userId)
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        thumbnail: item.image,
+        category: item.category,
+        viewCount: item._count.viewsLogs,
+        likeCount: item._count.likes,
+        createdAt: item.createdAt,
+        authour: {
+          id: item.users.id,
+          username: item.users.name,
+          avatarUrl: item.users.avatarUrl,
+        },
+      };
+    });
+
+    return project
+  }
 }
