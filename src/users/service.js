@@ -123,4 +123,19 @@ export class UserService {
 
     return project;
   };
+
+  updateUserInfo = async (email, avatarUrl, githubUrl,linkedinUrl, userId, userInfoId) => {
+    if (userInfoId!==+userId) throw new CustomError(403, "권한이 없습니다")
+    const userInfo = await this.userRepository.updateUserInfo(email, avatarUrl, githubUrl,linkedinUrl, userId)
+    
+    return {
+      id: userInfo.id,
+      name: userInfo.name,
+      email: userInfo.email,
+      avatarUrl: userInfo.avatarUrl,
+      githubUrl: userInfo.githubUrl,
+      linkedinUrl: userInfo.linkedinUrl,
+      createdAt: userInfo.createdAt
+    }
+  }
 }

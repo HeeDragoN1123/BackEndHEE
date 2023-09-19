@@ -17,8 +17,13 @@ router.get("/user/:userId", validateAccessToken, userController.getUserInfo)
 /* 사용자가 작성한 게시글 확인 API */
 router.get("/user/:userId/project", validateAccessToken, userController.getPost)
 
+/* 사용자 정보 수정 API */
+router.put("/user/:userId", validateAccessToken, userController.updateUserInfo)
+
 /* 액세스 토큰 재발급 API */
 router.get("/token", userController.token)
+
+
 
 
 export default router;
