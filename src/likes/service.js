@@ -24,9 +24,19 @@ getLikeById = async (userId) => {
 
 
 
-updateLike = async (userId, projectId) => {
+updateLike = async (projectId , userId ) => {
+//console.log("@@@@@@@@@@",isLike)
 
+let isLike = await this.likeRepository.isLike(projectId , userId);
+
+if(!isLike) {
+    await this.likeRepository.addLike(projectId , userId)
+}else{
+    await this.likeRepository.deleteLike(likeId)
 }
+
+    return isLike;
+};
 
 
 }

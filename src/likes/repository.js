@@ -19,14 +19,13 @@ export class LikeRepository {
   /* like 유저 id */
   // like 대소문자 다시확인
   getLikeById = async (userId) => {
-    //console.log("@@@@@@@@@@",userId)        유저 아이디 1로 나옴
+    //console.log("@@@@@@@@@@",userId)       // 유저 아이디 1로 나옴
       // _count 필드 출력
-    //   console.log(like[0]._count.Likes,"##################");
     return await this.prisma.likes.findMany({
       where: {
-        likes: {
+        Likes: {
           some: {
-            id: +userId,
+             id: +userId,
           },
         },
       },
@@ -49,7 +48,7 @@ export class LikeRepository {
         },
         _count: {
           select: {
-            likes: true, 
+            Likes: true, 
           },
         },
       },
@@ -60,5 +59,36 @@ export class LikeRepository {
   };
 
   /* 좋아요 / 좋아요 취소 */
-  updateLike = async () => {};
+    //console.log("&&&&&&&&&&&",isLike)
+    // console.log("$$$$$$$$$$",projectId) // 7
+    // console.log("%%%%%%%%%%%",userId)   // 2로 정상
+    //Unknown nested field '_count' for operation findManyLikes does not match any query. 오류
+    isLike = async (projectId , userId) => {
+    const like = this.prisma.likes.findFirst({
+        where : {projectId : +projectId , userId : +userId},
+
+    });
+
+    return like
+  };
+
+  addLike = async (projectId , userId) =>{
+  
+    const like = this.prisma.likes.create({
+        data: {projectId : +projectId , userId : +userId}
+    });
+    return like
+  };
+
+  // 문제인 부분 : likeId 를 찾을수가없음 
+  deleteLike = async (likeId) =>{
+
+   const like = this.prisma.delete({
+    where:{id : +likeId }
+   })
+   return like
+  }
+
+
 }
+

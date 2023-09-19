@@ -71,6 +71,7 @@ export class ProjectRepository {
         category: true,
         // viewCount : true,  어드밴스드
         //likeCount: true,
+        // likes : true, // 삭제 해야함 
        // isBookmarked: ture,
        // isLiked: true,
         createdAt: true,
