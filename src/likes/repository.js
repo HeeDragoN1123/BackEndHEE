@@ -1,4 +1,4 @@
-
+import {prisma} from '../utils/prisma/index.js'
 
 export class LikeRepository {
   constructor(prisma) {
@@ -29,14 +29,15 @@ export class LikeRepository {
           },
         },
       },
+
       select: {
         id: true,
         title: true,
         thumbnail: true,
         category: true,
-        viewCount: true,
+        //viewCount: true,
         likeCount: true,
-        isBookmarked: true,
+        //isBookmarked: true,
         isLiked: true,
         createdAt: true,
         users: {
@@ -59,11 +60,12 @@ export class LikeRepository {
   };
 
   /* 좋아요 / 좋아요 취소 */
-    //console.log("&&&&&&&&&&&",isLike)
+    
     // console.log("$$$$$$$$$$",projectId) // 7
     // console.log("%%%%%%%%%%%",userId)   // 2로 정상
     //Unknown nested field '_count' for operation findManyLikes does not match any query. 오류
     isLike = async (projectId , userId) => {
+
     const like = this.prisma.likes.findFirst({
         where : {projectId : +projectId , userId : +userId},
 
@@ -81,13 +83,19 @@ export class LikeRepository {
   };
 
   // 문제인 부분 : likeId 를 찾을수가없음 
-  deleteLike = async (likeId) =>{
+//   deleteLike = async (likeId) =>{
 
-   const like = this.prisma.delete({
-    where:{id : +likeId }
-   })
-   return like
-  }
+//    const like = this.prisma.delete({
+//     where:{id : +likeId }
+//    })
+//    return like
+//   }
+deleteLike = async (likeId) => {
+    console.log("@@@@@@@#######",likeId)
+    await prisma.likes.delete({
+      where: { id: +likeId },
+    });
+  };
 
 
 }

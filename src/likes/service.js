@@ -12,6 +12,7 @@ export class LikeService{
 //  } 
 
 findProjectById = async (projectId) =>{
+    // console.log("&&&&&&&&&&&",like)
     const like = await this.likeRepository.findProjectById(projectId);
 
 }
@@ -29,10 +30,18 @@ updateLike = async (projectId , userId ) => {
 
 let isLike = await this.likeRepository.isLike(projectId , userId);
 
+
+// if (isLike) {
+//     await this.likeRepository.deleteLike(isLike.likeId)
+// } else {
+//     await this.likeRepository.addLike(userId, postId)
+// }
+
+console.log("%%%%%%%%%%%",isLike)
 if(!isLike) {
     await this.likeRepository.addLike(projectId , userId)
 }else{
-    await this.likeRepository.deleteLike(likeId)
+    await this.likeRepository.deleteLike(isLike.id)  //LikeId
 }
 
     return isLike;

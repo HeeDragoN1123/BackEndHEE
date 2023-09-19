@@ -35,13 +35,26 @@ await this.likeService.findProjectById(projectId);
 let isLike = await this.likeService.updateLike(projectId, userId);
 
 //체크필요
+
+// if (isLike) {
+//     if (userId == isLike.UserId) {
+//       return res.status(200).json({ message: "좋아요가 취소되었습니다" });
+//     }
+//   } else {
+//     return res.status(200).json({ message: `${postId}번 게시글 좋아요+1` });
+//   }
+//   return res.status(200).json({ message: `${postId}번 게시글 좋아요+1` });
+
+
 if(!isLike) {
     //return res.status(200).json({messege : `${projectId}번 게시글 좋아요가 등록되었습니다.`})
     return res.status(200).json({isLike})
 
 }else{
+console.log("###########", isLike.id)
 await this.likeService.deleteLike({
     where : {likeId : isLike.id},
+    //where : {likeId : isLike.id},
 });
     return res.status(200).json({messege : `${projectId}번 게시글 좋아요가 취소되었습니다.`})
 }
