@@ -19,13 +19,16 @@ router.post('/', validateAccessToken, projectController.createProject);
 router.get('/', projectController.getProject)
 
 /* 게시글 상세 조회 */
-router.get('/:projectId', projectController.getByIdProject)
+router.get('/:projectId', projectController.getProjectById)
 
 /* 게시글 수정 */
 router.put('/:projectId', validateAccessToken, projectController.updateProject)
 
 /* 게시글 삭제*/
 router.delete('/:projectId', validateAccessToken, projectController.deleteProject)
+
+/* 카테고리별 게시글 조회 */
+router.get("/category/:categoryId", projectController.getProjectByCategory)
 
 
 export default router;

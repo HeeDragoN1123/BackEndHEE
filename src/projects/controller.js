@@ -20,7 +20,7 @@ export class ProjectController {
         userId
       );
 
-      return res.status(201).json({ project });
+      return res.status(201).json(project);
     } catch (err) {
       next(err);
     }
@@ -29,22 +29,22 @@ export class ProjectController {
   /* 프로젝트 목록 조회 */
   getProject = async (req, res, next) => {
     try {
-      const project = await this.projectService.getProject();
+      const projects = await this.projectService.getProject();
 
-      return res.status(200).json({ project });
+      return res.status(200).json(projects);
     } catch (err) {
       next(err);
     }
   };
 
   /* 프로젝트 상세 조회 */
-  getByIdProject = async (req, res, next) => {
+  getProjectById = async (req, res, next) => {
     try {
       const { projectId } = req.params;
 
-      const project = await this.projectService.getByIdProject(projectId);
+      const project = await this.projectService.getProjectById(projectId);
 
-      return res.status(200).json({ project });
+      return res.status(200).json(project);
     } catch (err) {
       next(err);
     }
@@ -80,6 +80,19 @@ export class ProjectController {
         userId
       );
       return res.status(200).json({ project });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  /* 카테고리별 조회 */
+  getProjectByCategory = async (req, res, next) => {
+    try {
+      const { category } = req.query;
+      
+      const project = await this.projectService.getProjectByCategory(category);
+
+      return res.status(200).json(project);
     } catch (err) {
       next(err);
     }
