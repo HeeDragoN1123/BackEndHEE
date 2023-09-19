@@ -79,14 +79,12 @@ export class UserService {
 
     /* 토큰에 저장된 유저정보 확인 */
     const user = await this.userRepository.validateToken(name);
-
     if (!user || refreshToken !== user.refreshToken)
       throw new CustomError(401, "리프레쉬 토큰 인증에 실패하였습니다");
 
     const accessToken = jwt.sign({ name: name }, process.env.SECRET_KEY, {
       expiresIn: 3600,
     });
-
     return accessToken;
   };
 
@@ -96,7 +94,7 @@ export class UserService {
     if (!user) throw new CustomError(403, "해당 유저가 존재하지 않습니다");
 
     return {
-      id: userId,
+      id: user.id,
       name: user.name,
       email: user.email,
       avatarUrl: user.avatarUrl,
@@ -105,4 +103,62 @@ export class UserService {
       createdAt: user.createdAt,
     };
   };
+
+  getPostByUserId = async (userId) => {
+    const projects = await this.userRepository.getPostByUserId(userId);
+    if (!projects) throw new CustomError(403, "게시글이 존재하지 않습니다");
+    console.log(projects);
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        category: item.category,
+        viewsLogs: item._count.viewsLogs,
+        likes: item._count.likes,
+      };
+    });
+    console.log(project);
+
+    return project;
+  };
+
+  updateUserInfo = async (email, avatarUrl, githubUrl,linkedinUrl, userId, userInfoId) => {
+    if (userInfoId!==+userId) throw new CustomError(403, "권한이 없습니다")
+    const userInfo = await this.userRepository.updateUserInfo(email, avatarUrl, githubUrl,linkedinUrl, userId)
+    
+    return {
+      id: userInfo.id,
+      name: userInfo.name,
+      email: userInfo.email,
+      avatarUrl: userInfo.avatarUrl,
+      githubUrl: userInfo.githubUrl,
+      linkedinUrl: userInfo.linkedinUrl,
+      createdAt: userInfo.createdAt
+    }
+  }
+
+  getUserLikedProject = async (userId) => {
+    const projects = await this.userRepository.getUserLikedProject(userId)
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        thumbnail: item.image,
+        category: item.category,
+        viewCount: item._count.viewsLogs,
+        likeCount: item._count.likes,
+        createdAt: item.createdAt,
+        authour: {
+          id: item.users.id,
+          username: item.users.name,
+          avatarUrl: item.users.avatarUrl,
+        },
+      };
+    });
+
+    return project
+  }
 }

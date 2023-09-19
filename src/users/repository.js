@@ -60,14 +60,81 @@ export class UserRepository {
         refreshToken: true,
       },
     });
-    return user
+
+    return user;
   };
 
-  getUserById = async(userId) => {
+  getUserById = async (userId) => {
     const user = await prisma.users.findFirst({
-        where: {id: +userId}
-    })
+      where: { id: +userId },
+    });
 
-    return user
-  }
+    return user;
+  };
+
+  getPostByUserId = async (userId) => {
+    const post = await prisma.projects.findMany({
+      where: {
+        userId: +userId,
+      },
+
+      include: {
+        _count: {
+          select: {
+            likes: true,
+            viewsLogs: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+    return post;
+  };
+
+  updateUserInfo = async (email, avatarUrl, githubUrl, linkedinUrl, userId) => {
+    const user = await prisma.users.update({
+      where: { id: +userId },
+      data: {
+        email,
+        avatarUrl,
+        githubUrl,
+        linkedinUrl,
+      },
+    });
+    return user;
+  };
+
+  getUserLikedProject = async (userId) => {
+    const projects = await prisma.projects.findMany({
+      where: {
+        select: {
+          likes: {
+            id: +userId,
+          },
+        },
+      },
+      select: {
+        id: true,
+        title: true,
+        image: true,
+        category: true,
+        createdAt: true,
+        users: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        _count: {
+          select: {
+            likes: true,
+            viewsLogs: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+    return projects
+  };
 }

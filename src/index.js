@@ -5,16 +5,9 @@ import likeRouter from './likes/router.js'
 
 const router = express.Router();
 
-
-
-
- 
-
 router.use('/', userRouter)
 router.use('/user', userRouter)
 router.use('/project', projectRouter);
 router.use('/project', likeRouter)
-
-
 
 export default router

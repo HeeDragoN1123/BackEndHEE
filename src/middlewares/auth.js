@@ -52,7 +52,9 @@ const validateAccessToken = async (req, res, next) => {
       errorMessage: "해당하는 사용자를 찾을 수 없습니다.",
     });
   }
-  req.user= user
+
+  req.user = user
+
   console.log(user)
   next();
   
