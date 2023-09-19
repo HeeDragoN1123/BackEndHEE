@@ -95,7 +95,7 @@ export class ProjectRepository {
     
     const project = await this.prisma.projects.findUnique({
       where: {
-        id: projectId,
+        id: +projectId,
       },
     });
     
@@ -105,7 +105,7 @@ export class ProjectRepository {
   updateProject = async (projectId, title, description, image) => {
     const project = await this.prisma.projects.update({
       where: {
-        id: projectId,
+        id: +projectId,
       },
       data: {
         title,
@@ -121,7 +121,7 @@ export class ProjectRepository {
     return await this.prisma.projects.delete({
 
       where: {
-        id: projectId,
+        id: +projectId,
       },
 
     });

@@ -25,22 +25,9 @@ export class LikeController {
     const { projectId } = req.params;
     const userId = req.user.id;
 
-    // await this.likeService.findProjectById(projectId);
-
-    // let isLike = await this.likeService.updateLike(projectId, userId);
-
-    //체크필요
-
-    // if (isLike) {
-    //     of (userId == isLike.id) {
-    //         return res.status(200).json({message: "좋아요가 취소ㄷ"})
-    //     }
-    // }
-
-
     await this.likeService.findProjectById(projectId);
     let isLike = await this.likeService.updateLike(projectId, userId);
-   
+    
     if (isLike) {
       if (userId !== isLike.UserId) {
         return res.status(200).json({ message: "좋아요가 취소되었습니다" });
@@ -49,18 +36,6 @@ export class LikeController {
       return res.status(200).json({ message: `${projectId}번 게시글 좋아요+1` });
     }
     return res.status(200).json({ message: `${projectId}번 게시글 좋아요+1` });
-
-
-    // if (!isLike) {
-    //     return res.status(200).json({messege : `${projectId}번 게시글 좋아요가 등록되었습니다.`})
-    //   //return res.status(200).json({ isLike });
-    // } else {
-    //  // console.log(typeof isLike.id);
-    // //   await this.likeService.deleteLike(projectId)
-    //   return res
-    //     .status(200)
-    //     .json({ messege: `${projectId}번 게시글 좋아요가 취소되었습니다.` });
-    // }
 
 
   };

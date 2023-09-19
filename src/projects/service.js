@@ -85,18 +85,18 @@ export class ProjectService {
 
   /* 프로젝트 수정 */
   updateProject = async (projectId, title, description, image, userId) => {
-    const project = await this.projectRepository.findProject(+projectId);
+    const project = await this.projectRepository.findProject(projectId);
 
     if (!project) {
       throw new CustomError(404, "게시글이 존재하지 않습니다.");
     }
-    return await this.projectRepository.updateProject(+projectId);
+    return await this.projectRepository.updateProject(projectId,title, title, description, image);
   };
 
 
   /* 프로젝트 삭제 */
   deleteProject = async (projectId, userId) => {
-    const project = await this.projectRepository.findProject(+projectId);
+    const project = await this.projectRepository.findProject(projectId);
 
     if (!project) {
       throw new CustomError(404, "게시글이 존재하지 않습니다.");
@@ -104,7 +104,7 @@ export class ProjectService {
     if (project.userId !== userId) {
       throw new CustomError(403, "게시글 삭제 권한이 없습니다");
     }
-    return await this.projectRepository.deleteProject(+projectId);
+    return await this.projectRepository.deleteProject(projectId);
   };
 
   getProjectByCategory = async (category) => {
