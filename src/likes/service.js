@@ -14,7 +14,6 @@ export class LikeService{
 findProjectById = async (projectId) =>{
     // console.log("&&&&&&&&&&&",like)
     const like = await this.likeRepository.findProjectById(projectId);
-
 }
 
 getLikeById = async (userId) => {
@@ -24,11 +23,11 @@ getLikeById = async (userId) => {
  }
 
 
-
+//서비스에 deleteLike 메서드가 없음. 
 updateLike = async (projectId , userId ) => {
 //console.log("@@@@@@@@@@",isLike)
 
-let isLike = await this.likeRepository.isLike(projectId , userId);
+let isLike = await this.likeRepository.isLike(projectId, userId);
 
 
 // if (isLike) {
@@ -37,9 +36,9 @@ let isLike = await this.likeRepository.isLike(projectId , userId);
 //     await this.likeRepository.addLike(userId, postId)
 // }
 
-console.log("%%%%%%%%%%%",isLike)
+//console.log(isLike.id)
 if(!isLike) {
-    await this.likeRepository.addLike(projectId , userId)
+    await this.likeRepository.addLike(projectId, userId)
 }else{
     await this.likeRepository.deleteLike(isLike.id)  //LikeId
 }

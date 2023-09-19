@@ -1,4 +1,4 @@
-import {prisma} from '../utils/prisma/index.js'
+import { prisma } from "../utils/prisma/index.js";
 
 export class LikeRepository {
   constructor(prisma) {
@@ -20,12 +20,12 @@ export class LikeRepository {
   // like 대소문자 다시확인
   getLikeById = async (userId) => {
     //console.log("@@@@@@@@@@",userId)       // 유저 아이디 1로 나옴
-      // _count 필드 출력
-    return await this.prisma.likes.findMany({
+    // _count 필드 출력
+    const project = await this.prisma.projects.findMany({
       where: {
-        Likes: {
+        likes: {
           some: {
-             id: +userId,
+            id: +userId,
           },
         },
       },
@@ -33,12 +33,12 @@ export class LikeRepository {
       select: {
         id: true,
         title: true,
-        thumbnail: true,
+        //thumbnail: true,
         category: true,
         //viewCount: true,
-        likeCount: true,
+        //likeCount: true,
         //isBookmarked: true,
-        isLiked: true,
+        // isLiked: true,
         createdAt: true,
         users: {
           select: {
@@ -49,7 +49,7 @@ export class LikeRepository {
         },
         _count: {
           select: {
-            Likes: true, 
+            likes: true,
           },
         },
       },
@@ -57,46 +57,46 @@ export class LikeRepository {
         createdAt: "desc",
       },
     });
+    return project;
   };
 
   /* 좋아요 / 좋아요 취소 */
-    
-    // console.log("$$$$$$$$$$",projectId) // 7
-    // console.log("%%%%%%%%%%%",userId)   // 2로 정상
-    //Unknown nested field '_count' for operation findManyLikes does not match any query. 오류
-    isLike = async (projectId , userId) => {
 
-    const like = this.prisma.likes.findFirst({
-        where : {projectId : +projectId , userId : +userId},
+  // console.log("$$$$$$$$$$",projectId) // 7
+  // console.log("%%%%%%%%%%%",userId)   // 2로 정상
+  //Unknown nested field '_count' for operation findManyLikes does not match any query. 오류
 
+  isLike = async (projectId, userId) => {
+    //console.log("@@@@@",isLike)
+    //console.log("$$$$$$$$$$",projectId)
+    const like = await this.prisma.likes.findFirst({
+      where: { projectId: +projectId, userId: +userId },
     });
-
-    return like
+    console.log("@@@@@@",like)
+    return like;
   };
 
-  addLike = async (projectId , userId) =>{
-  
-    const like = this.prisma.likes.create({
-        data: {projectId : +projectId , userId : +userId}
+  addLike = async (projectId, userId) => {
+    const like = await this.prisma.likes.create({
+      data: { projectId: +projectId, userId: +userId },
     });
-    return like
+    return like;
   };
 
-  // 문제인 부분 : likeId 를 찾을수가없음 
-//   deleteLike = async (likeId) =>{
+  // 문제인 부분 : likeId 를 찾을수가없음
 
-//    const like = this.prisma.delete({
-//     where:{id : +likeId }
-//    })
-//    return like
-//   }
-deleteLike = async (likeId) => {
-    console.log("@@@@@@@#######",likeId)
-    await prisma.likes.delete({
+  deleteLike = async (likeId) => {
+    const like = await this.prisma.likes.delete({
       where: { id: +likeId },
     });
+
+    return like;
   };
 
-
+  // deleteLike = async (likeId) => {
+  //     // console.log(typeof likeId)
+  //     await prisma.likes.delete({
+  //       where: { id: +likeId },
+  //     });
+  //   };
 }
-

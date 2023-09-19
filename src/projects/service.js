@@ -53,7 +53,7 @@ updateProject = async(projectId, title , description , image, userId) =>{
     throw new CustomError(403, "게시글 수정 권한이 존재하지 않습니다.")
    }
 
-   return await this.projectRepository.updateProject(projectId);
+   return await this.projectRepository.updateProject(projectId, title , description, image);
 }
 
 

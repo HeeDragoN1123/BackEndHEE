@@ -69,7 +69,7 @@ export  class ProjectController {
         const { title, description, image } = req.body;
         
 
-        const editproject = await this.projectService.updateProject(
+        const project = await this.projectService.updateProject(
           projectId,
           title,
           description,
@@ -77,9 +77,9 @@ export  class ProjectController {
           userId,
         );
 
-        
+
     
-        return res.status(200).json({ editproject });
+        return res.status(200).json({ project });
     }catch(err){
         next(err);
     }
