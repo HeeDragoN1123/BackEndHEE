@@ -79,14 +79,12 @@ export class UserService {
 
     /* 토큰에 저장된 유저정보 확인 */
     const user = await this.userRepository.validateToken(name);
-
     if (!user || refreshToken !== user.refreshToken)
       throw new CustomError(401, "리프레쉬 토큰 인증에 실패하였습니다");
 
     const accessToken = jwt.sign({ name: name }, process.env.SECRET_KEY, {
       expiresIn: 3600,
     });
-
     return accessToken;
   };
 
@@ -96,7 +94,7 @@ export class UserService {
     if (!user) throw new CustomError(403, "해당 유저가 존재하지 않습니다");
 
     return {
-      id: userId,
+      id: user.id,
       name: user.name,
       email: user.email,
       avatarUrl: user.avatarUrl,
@@ -104,5 +102,25 @@ export class UserService {
       linkedinUrl: user.linkedinUrl,
       createdAt: user.createdAt,
     };
+  };
+
+  getPostByUserId = async (userId) => {
+    const projects = await this.userRepository.getPostByUserId(userId);
+    if (!projects) throw new CustomError(403, "게시글이 존재하지 않습니다");
+    console.log(projects);
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        category: item.category,
+        viewsLogs: item._count.viewsLogs,
+        likes: item._count.likes,
+      };
+    });
+    console.log(project);
+
+    return project;
   };
 }

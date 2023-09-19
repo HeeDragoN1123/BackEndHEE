@@ -60,14 +60,34 @@ export class UserRepository {
         refreshToken: true,
       },
     });
-    return user
+
+    return user;
   };
 
-  getUserById = async(userId) => {
+  getUserById = async (userId) => {
     const user = await prisma.users.findFirst({
-        where: {id: +userId}
-    })
+      where: { id: +userId },
+    });
 
-    return user
-  }
+    return user;
+  };
+
+  getPostByUserId = async (userId) => {
+    const post = await prisma.projects.findMany({
+      where: {
+        userId: +userId,
+      },
+
+      include: {
+        _count: {
+          select: {
+            likes: true,
+            viewsLogs: true,
+            bookmarks: true,
+          },
+        },
+      },
+    });
+    return post;
+  };
 }
