@@ -105,15 +105,22 @@ export class UserService {
   };
 
   getPostByUserId = async (userId) => {
-    const post = await this.userRepository.getPostByUserId(userId);
-    if (!post) throw new CustomError(403, "게시글이 존재하지 않습니다");
-    console.log("post", post);
+    const projects = await this.userRepository.getPostByUserId(userId);
+    if (!projects) throw new CustomError(403, "게시글이 존재하지 않습니다");
+    console.log(projects);
 
-    return {
-      id: post.id,
-      title: post.title,
-      thumbNail: post.image,
-      category: post.category,
-    };
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        image: item.image,
+        category: item.category,
+        viewsLogs: item._count.viewsLogs,
+        likes: item._count.likes,
+      };
+    });
+    console.log(project);
+
+    return project;
   };
 }

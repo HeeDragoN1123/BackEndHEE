@@ -73,16 +73,19 @@ export class UserRepository {
   };
 
   getPostByUserId = async (userId) => {
-    console.log("userId", userId);
     const post = await prisma.projects.findMany({
       where: {
-        id: +userId,
+        userId: +userId,
       },
-      select: {
-        id: true,
-        title: true,
-        image: true,
-        category: true,
+
+      include: {
+        _count: {
+          select: {
+            likes: true,
+            viewsLogs: true,
+            bookmarks: true,
+          },
+        },
       },
     });
     return post;
