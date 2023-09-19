@@ -61,9 +61,9 @@ export class ProjectRepository {
 
   /* 프로젝트 상세 조회 */
   getByIdProject = async (id) => {
-   
+    //projectId 값 : +id 로 변경
     return await this.prisma.projects.findFirst({
-        where: {id},
+        where: {id}, 
       select: {
         id: true,
         title: true,
@@ -87,6 +87,7 @@ export class ProjectRepository {
 
 
 /* 프로젝트id 조회 */
+  //projectId 값 : +id 로 변경  id = +userId
   findProject = async(projectId) =>{
     const project =  await this.prisma.projects.findUnique({
         where : {

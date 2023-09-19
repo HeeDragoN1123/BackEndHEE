@@ -12,6 +12,7 @@ const port = process.env.PORT;
 
 app.use(log);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
