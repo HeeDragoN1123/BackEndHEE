@@ -60,10 +60,10 @@ export class ProjectRepository {
   };
 
   /* 프로젝트 상세 조회 */
-  getByIdProject = async (id) => {
+  getByIdProject = async (projectId) => {
     //projectId 값 : +id 로 변경
     return await this.prisma.projects.findFirst({
-        where: {id}, 
+        where: {id : +projectId}, 
       select: {
         id: true,
         title: true,
@@ -92,7 +92,7 @@ export class ProjectRepository {
   findProject = async(projectId) =>{
     const project =  await this.prisma.projects.findUnique({
         where : {
-            id : projectId,
+            id : +projectId,
         },
     });
     return project
@@ -103,7 +103,7 @@ export class ProjectRepository {
   updateProject = async(projectId, title , description , image) =>{
     const project = await this.prisma.projects.update({
         where : {
-            id: projectId,
+            id: +projectId,
          },
         data : {
         title,
@@ -120,7 +120,7 @@ export class ProjectRepository {
   deleteProject = async(projectId, title , description , image) =>{
     return await this.prisma.projects.delete({
         where : {
-            id: projectId,
+            id: +projectId,
         },
     });
   };

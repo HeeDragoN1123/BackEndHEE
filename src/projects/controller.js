@@ -30,6 +30,7 @@ export  class ProjectController {
         );
     
         return res.status(201).json({ project });
+
     }catch(err){
         next(err);
     }
@@ -66,16 +67,19 @@ export  class ProjectController {
         const { projectId } = req.params;
         const  userId = req.user.id
         const { title, description, image } = req.body;
-    
-        const project = await this.projectService.updateProject(
+        
+
+        const editproject = await this.projectService.updateProject(
           projectId,
           title,
           description,
           image,
           userId,
         );
+
+        
     
-        return res.status(200).json({ project });
+        return res.status(200).json({ editproject });
     }catch(err){
         next(err);
     }
