@@ -1,11 +1,12 @@
-import { CustomError } from "../errors/customError.js";
+import { CustomError } from "../errors/customError.js";console
 
 export class ProjectService {
-  // projectRepository = new ProjectRepository();
+
 
   constructor(projectRepository) {
     this.projectRepository = projectRepository;
   }
+
 
   /* 프로젝트 생성 */
   createProject = async (
@@ -92,6 +93,7 @@ export class ProjectService {
     return await this.projectRepository.updateProject(+projectId);
   };
 
+
   /* 프로젝트 삭제 */
   deleteProject = async (projectId, userId) => {
     const project = await this.projectRepository.findProject(+projectId);
@@ -132,3 +134,5 @@ export class ProjectService {
     return project;
   };
 }
+
+
