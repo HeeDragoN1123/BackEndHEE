@@ -11,14 +11,22 @@ router.post("/signup", userController.signUp);
 /* 로그인 API */
 router.post("/login", userController.login);
 
-/* 사용자 정보 확인 API */
+/* 유저 정보 확인 API */
 router.get("/user/:userId", validateAccessToken, userController.getUserInfo)
 
-/* 사용자가 작성한 게시글 확인 API */
+/* 유저가 작성한 게시글 확인 API */
 router.get("/user/:userId/project", validateAccessToken, userController.getPost)
+
+/* 유저 정보 수정 API */
+router.put("/user/:userId", validateAccessToken, userController.updateUserInfo)
+
+/* 유저가 좋아요 한 게시글 조회 API */
+router.get("/:userId/like", validateAccessToken, userController.getUserLikedProject)
 
 /* 액세스 토큰 재발급 API */
 router.get("/token", userController.token)
+
+
 
 
 export default router;

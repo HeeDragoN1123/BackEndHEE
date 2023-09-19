@@ -123,4 +123,42 @@ export class UserService {
 
     return project;
   };
+
+  updateUserInfo = async (email, avatarUrl, githubUrl,linkedinUrl, userId, userInfoId) => {
+    if (userInfoId!==+userId) throw new CustomError(403, "권한이 없습니다")
+    const userInfo = await this.userRepository.updateUserInfo(email, avatarUrl, githubUrl,linkedinUrl, userId)
+    
+    return {
+      id: userInfo.id,
+      name: userInfo.name,
+      email: userInfo.email,
+      avatarUrl: userInfo.avatarUrl,
+      githubUrl: userInfo.githubUrl,
+      linkedinUrl: userInfo.linkedinUrl,
+      createdAt: userInfo.createdAt
+    }
+  }
+
+  getUserLikedProject = async (userId) => {
+    const projects = await this.userRepository.getUserLikedProject(userId)
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        thumbnail: item.image,
+        category: item.category,
+        viewCount: item._count.viewsLogs,
+        likeCount: item._count.likes,
+        createdAt: item.createdAt,
+        authour: {
+          id: item.users.id,
+          username: item.users.name,
+          avatarUrl: item.users.avatarUrl,
+        },
+      };
+    });
+
+    return project
+  }
 }
