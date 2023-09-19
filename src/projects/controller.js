@@ -57,6 +57,7 @@ export class ProjectController {
   updateProject = async (req, res, next) => {
     try {
       const { projectId } = req.params;
+      const  userId = req.user.id
       const { title, description, image } = req.body;
 
       const project = await this.projectService.updateProject(
@@ -77,7 +78,7 @@ export class ProjectController {
   deleteProject = async (req, res, next) => {
     try {
       const { projectId } = req.params;
-
+      const  userId  = req.user.id;
       const project = await this.projectService.deleteProject(
         projectId,
         userId

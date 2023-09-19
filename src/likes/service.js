@@ -37,6 +37,7 @@ let isLike = await this.likeRepository.isLike(projectId, userId);
 // }
 
 //console.log(isLike.id)
+
 if(!isLike) {
     await this.likeRepository.addLike(projectId, userId)
 }else{
