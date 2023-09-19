@@ -1,15 +1,15 @@
 import { CustomError } from "../errors/customError.js";
 
 export class ProjectService {
-// projectRepository = new ProjectRepository();  
+
 
 constructor(projectRepository){
 this.projectRepository = projectRepository
 }
 
 /* 프로젝트 생성 */
-createProject = async(title ,description, image, liveSiteUrl,githubUrl,category,  userId )  =>{
-     
+createProject = async(title ,description, image, liveSiteUrl,githubUrl,category,thumbnail,  userId  )  =>{
+    //console.log("@@@@@@@@@",userId)
     return await this.projectRepository.createProject(
      
         title,
@@ -18,6 +18,7 @@ createProject = async(title ,description, image, liveSiteUrl,githubUrl,category,
         liveSiteUrl,
         githubUrl,
         category,
+        thumbnail,
         userId,
     );
 
@@ -39,17 +40,29 @@ getByIdProject = async(projectId) =>{
 /* 프로젝트 수정 */
 updateProject = async(projectId, title , description , image, userId) =>{
    // console.log("@@@@@@@@@@",projectId)
+    console.log("@@@@@@@@@@",userId)
    const project = await this.projectRepository.findProject(+projectId);
 
     if(!project){
     throw new CustomError(404, "게시글이 존재하지 않습니다.");
    }
-//    if(project.userId !== userId){
-//     throw new CustomError(403, "게시글 수정 권한이 존재하지 않습니다.")
-//    }
+   if(project.userId !== userId){
+    throw new CustomError(403, "게시글 수정 권한이 존재하지 않습니다.")
+   }
 
    return await this.projectRepository.updateProject(+projectId);
 }
+
+//   /* 프로젝트 수정 */
+//   updateProject = async (projectId, title, description, image, userId) => {
+//     const project = await this.projectRepository.findProject(+projectId);
+
+//     if (!project) {
+//       throw new CustomError(404, "게시글이 존재하지 않습니다.");
+//     }
+//     return await this.projectRepository.updateProject(+projectId);
+//   };
+
 
 
 /* 프로젝트 삭제 */
@@ -59,9 +72,9 @@ deleteProject = async(projectId, userId) =>{
     if(!project){
     throw new CustomError(404, "게시글이 존재하지 않습니다.");
    }
-//    if(project.userId !== userId){
-//     throw new CustomError(403, "게시글 삭제 권한이 존재하지 않습니다.")
-//    }
+   if(project.userId !== userId){
+    throw new CustomError(403, "게시글 삭제 권한이 존재하지 않습니다.")
+   }
     return await this.projectRepository.deleteProject(+projectId);
  }
 

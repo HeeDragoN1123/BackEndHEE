@@ -13,18 +13,22 @@ export class ProjectRepository {
     liveSiteUrl,
     githubUrl,
     category,
+    thumbnail,
     userId,
+    
   ) => {
-
+    //console.log("!!!!!!!!!",userId)
     return await this.prisma.projects.create({
       data: {
-        userId,
         title,
         description,
         image,
         liveSiteUrl,
         githubUrl,
         category,
+        thumbnail,
+        userId,
+        
       },
     });
   };
@@ -36,7 +40,7 @@ export class ProjectRepository {
       select: {
         id: true,
         title: true,
-        //thumbnail: true,
+        thumbnail: true,
         category: true,
         // viewCount : true,  어드밴스드
         //likeCount: true,
@@ -90,7 +94,6 @@ export class ProjectRepository {
     const project =  await this.prisma.projects.findUnique({
         where : {
             id : projectId,
-            // projectId,
         },
     });
     //console.log("##########", project)
