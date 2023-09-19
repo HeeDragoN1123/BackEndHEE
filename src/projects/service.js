@@ -9,7 +9,6 @@ this.projectRepository = projectRepository
 
 /* 프로젝트 생성 */
 createProject = async(title ,description, image, liveSiteUrl,githubUrl,category,thumbnail,  userId  )  =>{
-    //console.log("@@@@@@@@@",userId)
     return await this.projectRepository.createProject(
      
         title,
@@ -32,14 +31,12 @@ getProject = async() =>{
 
 /* 프로젝트 상세 조회 */
 getByIdProject = async(projectId) =>{
-    //console.log("@@@@@@", projectId)
     return await this.projectRepository.getByIdProject(+projectId);
 
 }
 
 /* 프로젝트 수정 */
 updateProject = async(projectId, title , description , image, userId) =>{
-   // console.log("@@@@@@@@@@",projectId)
     console.log("@@@@@@@@@@",userId)
    const project = await this.projectRepository.findProject(+projectId);
 
@@ -52,17 +49,6 @@ updateProject = async(projectId, title , description , image, userId) =>{
 
    return await this.projectRepository.updateProject(+projectId);
 }
-
-//   /* 프로젝트 수정 */
-//   updateProject = async (projectId, title, description, image, userId) => {
-//     const project = await this.projectRepository.findProject(+projectId);
-
-//     if (!project) {
-//       throw new CustomError(404, "게시글이 존재하지 않습니다.");
-//     }
-//     return await this.projectRepository.updateProject(+projectId);
-//   };
-
 
 
 /* 프로젝트 삭제 */

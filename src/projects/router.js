@@ -16,7 +16,6 @@ const projectController = new ProjectController(projectService);
 
 // /* 게시글 생성 */
  router.post('/', validateAccessToken, projectController.createProject);
-//validate 추가 필요
 
 // /* 게시글 목록 조회 */
 router.get('/', projectController.getProject)
@@ -26,7 +25,6 @@ router.get('/:projectId', projectController.getByIdProject)
 
 /* 게시글 수정 */
 router.put('/:projectId', validateAccessToken, projectController.updateProject)
-//validate 추가 필요
 
 /* 게시글 삭제*/
 router.delete('/:projectId',validateAccessToken, projectController.deleteProject)
