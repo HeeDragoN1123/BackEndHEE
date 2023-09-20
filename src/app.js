@@ -2,6 +2,7 @@ import express from "express";
 import router from "./index.js";
 import dotenv from "dotenv";
 import { errorhandler } from "./middlewares/errorhandler.js";
+import cors from "cors"
 import log from "./middlewares/log.js";
 import cookieParser from "cookie-parser";
 
@@ -10,6 +11,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors())
 app.use(log);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

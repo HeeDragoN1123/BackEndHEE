@@ -107,9 +107,9 @@ export class UserRepository {
   getUserLikedProject = async (userId) => {
     const projects = await prisma.projects.findMany({
       where: {
-        select: {
-          likes: {
-            id: +userId,
+        likes: {
+          some: {
+            userId: +userId,
           },
         },
       },
@@ -135,6 +135,7 @@ export class UserRepository {
         },
       },
     });
-    return projects
+    console.log(projects);
+    return projects;
   };
 }

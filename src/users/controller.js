@@ -130,9 +130,9 @@ export class UserController {
 
   getUserLikedProject = async (req, res, next) => {
     try {
-      const userId = req.user.id
+      const {userId} = req.params
 
-      const projects = await this.UserController.getUserLikedProject(userId)
+      const projects = await this.userService.getUserLikedProject(userId)
 
       console.log(projects)
 

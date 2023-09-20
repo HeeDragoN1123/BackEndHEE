@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.use('/', userRouter)
 router.use('/user', userRouter)
-router.use('/project', projectRouter);
-router.use('/project', likeRouter)
+router.use('/project', [projectRouter, likeRouter]);
 
 export default router
