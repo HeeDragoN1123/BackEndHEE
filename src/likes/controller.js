@@ -1,5 +1,4 @@
 
-
 export class LikeController {
   constructor(likeService) {
     this.likeService = likeService;
