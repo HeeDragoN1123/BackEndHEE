@@ -1,8 +1,15 @@
 import { prisma } from "../utils/prisma/index.js";
 import bcrypt from "bcrypt";
 
+const findUserByField = async (field, value) => {
+  return await prisma.users.findUnique({
+    where: { [field]: value },
+  });
+};
+
 export class UserRepository {
   /* DB에서 name, email로 중복데이터 확인 */
+
   findUserByName = async (name) => {
     const user = await prisma.users.findFirst({
       where: { name },
