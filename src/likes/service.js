@@ -23,9 +23,9 @@ export class LikeService {
     let isLike = await this.likeRepository.isLikeExist(projectId, userId);
 
     if (!isLike) {
-      await this.likeRepository.addLike(projectId, userId);
+      await this.likeRepository.addBookmark(projectId, userId);
     } else {
-      await this.likeRepository.deleteLike(isLike.id);
+      await this.likeRepository.deleteBookmark(isLike.id);
     }
 
     return isLike;

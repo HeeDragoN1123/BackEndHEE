@@ -6,11 +6,11 @@ export class LikeRepository {
 
   /* 프로젝트 id  */
   findProjectById = async (projectId) => {
-    const like = await this.prisma.projects.findFirst({
+    const project = await this.prisma.projects.findFirst({
       where: { id: +projectId },
     });
 
-    return like;
+    return project;
   };
 
   /* 좋아요 찾기 */
