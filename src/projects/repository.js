@@ -1,4 +1,3 @@
-//import {prisma} from '../utils/prisma/index.js'
 
 export class ProjectRepository {
   constructor(prisma) {
@@ -96,18 +95,17 @@ export class ProjectRepository {
     
     const project = await this.prisma.projects.findUnique({
       where: {
-        id: projectId,
+        id: +projectId,
       },
     });
     
     return project;
   };
 
-  /* 프로젝트 수정 */
   updateProject = async (projectId, title, description, image) => {
     const project = await this.prisma.projects.update({
       where: {
-        id: projectId,
+        id: +projectId,
       },
       data: {
         title,
@@ -121,9 +119,11 @@ export class ProjectRepository {
   /* 프로젝트 삭제 */
   deleteProject = async (projectId, title, description, image) => {
     return await this.prisma.projects.delete({
+
       where: {
-        id: projectId,
+        id: +projectId,
       },
+
     });
   };
 
