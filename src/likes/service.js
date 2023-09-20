@@ -1,5 +1,4 @@
 
-
 export class LikeService{
     constructor(likeRepository){
         this.likeRepository = likeRepository
@@ -7,21 +6,37 @@ export class LikeService{
 
 
 findProjectById = async (projectId) =>{
-
-    const likeCount = await this.likeRepository.findProjectById(projectId);
-
-    return likeCount
-}
+    const like = await this.likeRepository.findProjectById(projectId); 
+    return like
+};
 
 getLikeById = async (userId) => {
-    const likeCount = await this.likeRepository.getLikeById(userId);
+    const likes = await this.likeRepository.getLikeById(userId);
+    
+    const likeCount = likes.map((item) => {
+        return {
+          id: item.id,
+          title: item.title,
+          thumbnail: item.image,
+          category: item.category,
+          viewCount: item._count.viewsLogs,
+          likeCount: item._count.likes,
+          bookmarkCount: item._count.bookmarks,
+          createdAt: item.createdAt,
+          authour: {
+            id: item.users.id,
+            username: item.users.name,
+            avatarUrl: item.users.avatarUrl,
+          },
+        };
+      });
 
-    return likeCount
+   return likeCount
  }
 
 
 //서비스에 deleteLike 메서드가 없음. 
-updateLike = async (projectId , userId ) => {
+updateLike = async (projectId,  userId ) => {
 
 
 let isLike = await this.likeRepository.isLike(projectId, userId);

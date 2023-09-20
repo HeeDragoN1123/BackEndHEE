@@ -2,6 +2,7 @@
 export class BookmarkRepository {
     constructor(prisma) {
       this.prisma = prisma;
+
     }
   
     /* 프로젝트 id  */
@@ -15,7 +16,7 @@ export class BookmarkRepository {
   
     /* 북마크 찾기 */
     getBookmarkById = async (userId) => {
-      const project = await this.prisma.projects.findMany({
+      const bookmarks = await this.prisma.projects.findMany({
         where: {
           bookmarks: {
             some: {
@@ -47,9 +48,10 @@ export class BookmarkRepository {
           createdAt: "desc",
         },
       });
-      return project;
+      return bookmarks;
     };
-  
+
+
     /* 북마크 / 북마크 취소 */
   
     isBookmark = async (projectId, userId) => {

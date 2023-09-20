@@ -51,7 +51,6 @@ export class ProjectService {
         category: item.category,
         viewCount: item._count.viewsLogs,
         likeCount: item._count.likes,
-        bookmarkCount: item._count.bookmarks,
         createdAt: item.createdAt,
         authour: {
           id: item.users.id,
@@ -75,7 +74,6 @@ export class ProjectService {
       category: project.category,
       viewCount: project._count.viewsLogs,
       likeCount: project._count.likes,
-      bookmarkCount: item._count.bookmarks,
       createdAt: project.createdAt,
       authour: {
         id: project.users.id,
@@ -124,7 +122,6 @@ export class ProjectService {
         category: item.category,
         viewCount: item._count.viewsLogs,
         likeCount: item._count.likes,
-        bookmarkCount: item._count.bookmarks,
         createdAt: item.createdAt,
         authour: {
           id: item.users.id,
