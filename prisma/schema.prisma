@@ -14,7 +14,7 @@ datasource db {
 //회원가입 테이블 정의
 model Users {
   id          Int       @id @default(autoincrement())
-  name        String    @unique
+  name        String    
   nickname    String    @unique 
   email       String    @unique 
   password    String    

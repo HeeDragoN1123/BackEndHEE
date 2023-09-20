@@ -11,7 +11,6 @@ export class UserController {
       const { name, nickname, email, password } =
         await signUpSchema.validateAsync(req.body);
 
-      /* 유니크 키 name, nickname, email로 중복유저 검증 */
       await this.userService.findUserByName(name);
       await this.userService.findUserByNickname(nickname);
       await this.userService.findUserByEmail(email);
