@@ -6,7 +6,7 @@ export class LikeRepository {
 
   /* 프로젝트 id  */
   findProjectById = async (projectId) => {
-    const like = await this.prisma.likes.findFirst({
+    const like = await this.prisma.projects.findFirst({
       where: { id: +projectId },
     });
 
@@ -50,9 +50,9 @@ export class LikeRepository {
     return project;
   };
 
-  /* 좋아요 / 좋아요 취소 */
+  /* 좋아요 관리 */
 
-  isLike = async (projectId, userId) => {
+  isLikeExist = async (projectId, userId) => {
     const like = await this.prisma.likes.findFirst({
       where: { projectId: +projectId, userId: +userId },
     });
@@ -67,9 +67,9 @@ export class LikeRepository {
   };
 
 
-  deleteLike = async (likeId) => {
+  deleteLike = async (id) => {
     const like = await this.prisma.likes.delete({
-      where: { id: +likeId },
+      where: { id: +id },
     });
 
     return like;
