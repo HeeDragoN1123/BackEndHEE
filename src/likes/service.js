@@ -17,9 +17,10 @@ findProjectById = async (projectId) =>{
 }
 
 getLikeById = async (userId) => {
-    const like = await this.likeRepository.getLikeById(userId);
+    //console.log("&&&&&&&&&&&",like)
+    const likeCount = await this.likeRepository.getLikeById(userId);
 
-    return like
+    return likeCount
  }
 
 
