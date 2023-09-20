@@ -31,7 +31,7 @@ export class UserService {
     /* response 메세지 반환 */
     return {
       name: user.name,
-      nickname: user.nickname,
+      nickname: user.nickame,
       email: user.email
     };
   };
