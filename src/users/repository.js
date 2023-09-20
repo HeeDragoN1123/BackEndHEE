@@ -15,27 +15,22 @@ export class UserRepository {
     });
     return user;
   };
+  findUserByNickname = async (nickname) => {
+    const user = await prisma.users.findFirst({
+      where: { nickname },
+    });
+    return user;
+  };
 
-  signUp = async (
-    name,
-    avatarUrl,
-    email,
-    password,
-    description,
-    githubUrl,
-    linkedinUrl
-  ) => {
+  signUp = async (name, nickname, email, password) => {
     /* body데이터 DB에 저장(비밀번호는 암호화) */
     const hashedpassword = await bcrypt.hash(password, 10);
     const user = await prisma.users.create({
       data: {
         name,
-        avatarUrl,
+        nickname,
         email,
         password: hashedpassword,
-        description,
-        githubUrl,
-        linkedinUrl,
       },
     });
 
@@ -107,9 +102,9 @@ export class UserRepository {
   getUserLikedProject = async (userId) => {
     const projects = await prisma.projects.findMany({
       where: {
-        select: {
-          likes: {
-            id: +userId,
+        likes: {
+          some: {
+            userId: +userId,
           },
         },
       },
@@ -135,6 +130,7 @@ export class UserRepository {
         },
       },
     });
-    return projects
+    console.log(projects);
+    return projects;
   };
 }

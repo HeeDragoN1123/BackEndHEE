@@ -5,7 +5,6 @@ import {LikeService} from './service.js'
 import {LikeRepository} from './repository.js'
 import { validateAccessToken } from '../middlewares/auth.js'
 
-
 const router = express.Router();
 
 // const likeController = new LikeController()
@@ -15,15 +14,10 @@ const likeRepository = new LikeRepository(prisma);
 const likeService = new LikeService(likeRepository)
 const likeController = new LikeController(likeService);
 
-
-
 /* 좋아요 조회 */
 router.get('/:projectId/like', validateAccessToken, likeController.getLike)
 
-
 /* 좋아요 업데이트 */
 router.put('/:projectId/like', validateAccessToken, likeController.updateLike)
-
-
 
 export default router

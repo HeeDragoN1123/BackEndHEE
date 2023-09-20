@@ -14,13 +14,14 @@ datasource db {
 //회원가입 테이블 정의
 model Users {
   id          Int       @id @default(autoincrement())
-  name        String    @unique 
+  name        String    @unique
+  nickname    String    @unique 
   email       String    @unique 
   password    String    
-  avatarUrl   String    
-  description String    
-  githubUrl   String    
-  linkedinUrl String    
+  avatarUrl   String?   @default("https://cdn.dribbble.com/assets/avatar-default-e370af14535cdbf137637a27ee1a8e451253edc80be429050bc29d59b1f7cda0.gif") 
+  description String?    
+  githubUrl   String?    
+  linkedinUrl String?    
   createdAt   DateTime  @default(now()) 
   refreshToken String?  @db.Text
   //updatedAt   DateTime  @updatedAt @map("updatedAt")

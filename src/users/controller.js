@@ -1,5 +1,6 @@
 import { UserService } from "./service.js";
 import { signUpSchema, loginSchema } from "../utils/joi/index.js";
+import { createAccessToken, createRefreshToken } from "../middlewares/auth.js";
 
 export class UserController {
   userService = new UserService();
@@ -7,32 +8,26 @@ export class UserController {
   /* 회원가입 메서드 */
   signUp = async (req, res, next) => {
     try {
-      const {
-        name,
-        avatarUrl,
-        email,
-        password,
-        description,
-        githubUrl,
-        linkedinUrl,
-      } = await signUpSchema.validateAsync(req.body);
+      const { name, nickname, email, password } =
+        await signUpSchema.validateAsync(req.body);
 
-      /* 유니크 키 name, email로 중복유저 검증 */
+      /* 유니크 키 name, nickname, email로 중복유저 검증 */
       await this.userService.findUserByName(name);
+      await this.userService.findUserByNickname(nickname);
       await this.userService.findUserByEmail(email);
 
       /* req.body 데이터와 함께 상위 메서드 호출 */
       const data = await this.userService.signUp(
-        name,
-        avatarUrl,
-        email,
-        password,
-        description,
-        githubUrl,
-        linkedinUrl
+        name, nickname, email, password
       );
 
-      res.status(201).json({ message: data });
+      const accessToken = createAccessToken(nickname);
+      const refreshToken = createRefreshToken(nickname);
+
+      res.cookie("accessToken", accessToken);
+      res.cookie("refreshToken", refreshToken);
+
+      res.status(201).json(data);
     } catch (err) {
       next(err);
     }
@@ -130,13 +125,13 @@ export class UserController {
 
   getUserLikedProject = async (req, res, next) => {
     try {
-      const userId = req.user.id
+      const { userId } = req.params;
 
-      const projects = await this.UserController.getUserLikedProject(userId)
+      const projects = await this.userService.getUserLikedProject(userId);
 
-      console.log(projects)
+      console.log(projects);
 
-      return res.status(200).json(projects)
+      return res.status(200).json(projects);
     } catch (err) {
       next(err);
     }
