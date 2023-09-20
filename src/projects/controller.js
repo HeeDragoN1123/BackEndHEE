@@ -1,10 +1,13 @@
+
 export class ProjectController {
+
   constructor(projectService) {
     this.projectService = projectService;
   }
 
   /* 프로젝트 생성 */
   createProject = async (req, res, next) => {
+
     try {
       const { title, description, image, liveSiteUrl, githubUrl, category } =
         req.body;
@@ -54,6 +57,7 @@ export class ProjectController {
   updateProject = async (req, res, next) => {
     try {
       const { projectId } = req.params;
+      const  userId = req.user.id
       const { title, description, image } = req.body;
 
       const project = await this.projectService.updateProject(
@@ -74,7 +78,7 @@ export class ProjectController {
   deleteProject = async (req, res, next) => {
     try {
       const { projectId } = req.params;
-
+      const  userId  = req.user.id;
       const project = await this.projectService.deleteProject(
         projectId,
         userId
