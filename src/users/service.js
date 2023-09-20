@@ -7,39 +7,32 @@ import jwt from "jsonwebtoken";
 export class UserService {
   userRepository = new UserRepository();
 
-  /* name, email에 해당하는 유저가 존재하면 에러메시지를 던짐 */
+  /* name, nick, email에 해당하는 유저가 존재하면 에러메시지를 던짐 */
   findUserByName = async (name) => {
     const existName = await this.userRepository.findUserByName(name);
-    if (existName) throw new CustomError(412, "이미 가입된 유저입니다");
+    if (existName) throw new CustomError(412, "이미 가입된 Name입니다");
   };
   findUserByEmail = async (email) => {
     const existEmail = await this.userRepository.findUserByEmail(email);
-    if (existEmail) throw new CustomError(412, "이미 가입된 유저입니다");
+    if (existEmail) throw new CustomError(412, "이미 가입된 Email입니다");
   };
+  findUserByNickname = async (nickname) => {
+    const existNickname = await this.userRepository.findUserByNickname(nickname)
+    if (existNickname) throw new CustomError(412, "이미 가입된 Nickname입니다");
+  }
 
   signUp = async (
-    name,
-    avatarUrl,
-    email,
-    password,
-    description,
-    githubUrl,
-    linkedinUrl
+    name, nickname, email, password
   ) => {
     const user = await this.userRepository.signUp(
-      name,
-      avatarUrl,
-      email,
-      password,
-      description,
-      githubUrl,
-      linkedinUrl
+      name, nickname, email, password
     );
 
     /* response 메세지 반환 */
     return {
       name: user.name,
-      createdAt: user.createdAt,
+      nickname: user.nickname,
+      email: user.email
     };
   };
 
