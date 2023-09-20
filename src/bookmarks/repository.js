@@ -20,7 +20,7 @@ export class BookmarkRepository {
         where: {
           bookmarks: {
             some: {
-              id: +userId,
+              userId: +userId,
             },
           },
         },
@@ -40,7 +40,9 @@ export class BookmarkRepository {
           },
           _count: {
             select: {
-                bookmarks: true,
+              likes: true,
+              viewsLogs: true,
+              bookmarks: true,
             },
           },
         },

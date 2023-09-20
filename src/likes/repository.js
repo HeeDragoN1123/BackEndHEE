@@ -3,7 +3,6 @@ export class LikeRepository {
   constructor(prisma) {
     this.prisma = prisma;
   }
-
   /* 프로젝트 id  */
   findProjectById = async (projectId) => {
     const like = await this.prisma.likes.findFirst({
@@ -19,7 +18,7 @@ export class LikeRepository {
       where: {
         likes: {
           some: {
-            id: +userId,
+            userId: +userId,
           },
         },
       },
@@ -40,6 +39,8 @@ export class LikeRepository {
         _count: {
           select: {
             likes: true,
+            viewsLogs: true,
+            bookmarks: true,
           },
         },
       },
@@ -74,5 +75,4 @@ export class LikeRepository {
 
     return like;
   };
-
 }
