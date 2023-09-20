@@ -13,14 +13,37 @@ export class BookmarkService {
   };
 
   updateBookmark = async (projectId, userId) => {
-    let isBookmark = await this.likeRepository.isBookMarkExist(projectId, userId);
+    let isBookmark = await this.bookmarkRepository.isBookMarkExist(projectId, userId);
 
     if (!isBookmark) {
-      await this.likeRepository.addLike(projectId, userId);
+      await this.bookmarkRepository.addBookmark(projectId, userId);
     } else {
-      await this.likeRepository.deleteLike(isBookmark.id);
+      await this.bookmarkRepository.deleteBookmark(isBookmark.id);
     }
 
     return isBookmark;
   };
+
+  getUserBookmarkedProject = async (userId) => {
+    const projects = await this.bookmarkRepository.getUserBookmarkedProject(userId)
+
+    const project = projects.map((item) => {
+      return {
+        id: item.id,
+        title: item.title,
+        thumbnail: item.image,
+        category: item.category,
+        viewCount: item._count.viewsLogs,
+        likeCount: item._count.likes,
+        createdAt: item.createdAt,
+        authour: {
+          id: item.users.id,
+          username: item.users.name,
+          avatarUrl: item.users.avatarUrl,
+        },
+      };
+    });
+
+    return project
+  }
 }
