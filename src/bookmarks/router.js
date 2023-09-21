@@ -1,4 +1,4 @@
-import { validateAccessToken } from "../middlewares/auth/auth.js";
+import { validateAccessToken } from "../middlewares/auth.js";
 import { BookmarkController } from "./controller.js";
 import express from "express"
 

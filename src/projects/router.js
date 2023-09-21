@@ -3,7 +3,7 @@ import {prisma} from '../utils/prisma/index.js';
 import {ProjectController} from './controller.js';
 import {ProjectService} from "./service.js";
 import {ProjectRepository} from "./repository.js";
-import { validateAccessToken } from "../middlewares/auth/auth.js"
+import { validateAccessToken } from "../middlewares/auth.js"
 
 
 const router = express.Router();

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
-import { prisma } from "../../utils/prisma/index.js";
+import { prisma } from "../utils/prisma/index.js";
 
 /* 액세스토큰을 생성하는 함수 */
 const createAccessToken = async (user) => {
