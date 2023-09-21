@@ -68,4 +68,4 @@ const validateToken = (token, secretKey) => {
   }
 };
 
-export { createAccessToken, createRefreshToken, validateAccessToken };
+export { createAccessToken, createRefreshToken, validateAccessToken, validateToken };
