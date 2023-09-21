@@ -10,7 +10,7 @@ import bcrypt from "bcrypt";
  * @returns {Promise<Object|null>} - 검색 결과를 포함한 객체를 반환. 사용자를 찾지 못한 경우 null 반환.
  */
 const findUserByField = async (field, value) => {
-   // Prisma를 사용하여 특정 필드의 값을 기준으로 사용자 검색
+   // 특정 필드의 값을 기준으로 사용자 검색
   return await prisma.users.findUnique({
     where: { [field]: value },
   });
@@ -76,20 +76,6 @@ const validateToken = async (nickname) => {
   return user;
 };
 
-/**
- * 특정 ID를 기반으로 사용자를 검색하는 함수.
- *
- * @async
- * @param {number} userId - 검색할 사용자의 고유 ID.
- * @returns {Promise<Object|null>} - 사용자 정보를 포함한 객체를 반환. 사용자를 찾지 못한 경우 null 반환.
- */
-const getUserById = async (userId) => {
-  const user = await prisma.users.findFirst({
-    where: { id: +userId },
-  });
-
-  return user;
-};
 /**
  * 특정 사용자가 생성한 프로젝트 목록을 가져오는 함수.
  *
@@ -186,13 +172,25 @@ const getUserLikedProject = async (userId) => {
   return projects;
 };
 
+const updateIsEmailVerified = async (email) => {
+
+  const user = await prisma.users.update({
+    where: {email},
+    data: {
+      isEmailVerified: true
+    }
+  })
+
+  return user.isEmailVerified
+}
+
 export const userRepository = {
   signUp,
   findUserByField,
   getProjectByUserId,
-  getUserById,
   getUserLikedProject,
   validateToken,
   updateUserInfo,
   updateToken,
+  updateIsEmailVerified
 };
