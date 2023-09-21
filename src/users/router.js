@@ -1,7 +1,7 @@
 import express from "express";
 import { userController } from "./controller.js";
 import { validateAccessToken } from "../middlewares/auth.js";
-import { emailAuth, verifyToken } from "../middlewares/auth.email.js";
+import { emailAuth, verifyLink } from "../middlewares/auth.email.js";
 
 const router = express.Router();
 
@@ -37,6 +37,6 @@ router.get("/token", userController.reCreateAccessToken);
 /* 이메일 인증 API */
 router.post("/emailCheck", emailAuth);
 
-router.get("/verifyLink", verifyToken);
+router.get("/verifyLink", verifyLink);
 
 export default router;

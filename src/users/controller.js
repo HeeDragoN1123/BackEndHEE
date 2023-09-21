@@ -94,7 +94,7 @@ const getUserInfo = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
 // userService를 사용하여 사용자 정보를 가져옴
-  const userInfo = await userService.getUserById(userId);
+  const userInfo = await userService.findUserById(userId);
 
   return res.status(200).json(userInfo);
 });
@@ -111,7 +111,7 @@ const getProjectByUserId = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
   // 요청파라미터 해당 유저 확인
-  await userService.getUserById(userId);
+  await userService.findUserById(userId);
 
   // userService를 사용하여 프로젝트를 가져옴
   const workedProject = await userService.getProjectByUserId(userId);
@@ -133,7 +133,7 @@ const updateUserInfo = asyncHandler(async (req, res) => {
   const userInfoId = req.user.id;
 
   // userService를 사용하여 요청된 사용자 정보 가져오기
-  await userService.getUserById(userId);
+  await userService.findUserById(userId);
 
    // userService를 사용하여 사용자 정보 업데이트
   const userInfo = await userService.updateUserInfo(

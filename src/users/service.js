@@ -74,27 +74,23 @@ const login = async (nickname, password) => {
   // userRepository를 사용하여 닉네임을 기반으로 사용자 검색
   const user = await userRepository.findUserByField("nickname", nickname);
 
-  // 사용자를 찾을 수 없으면 예외를 throw
   if (!user) throw new CustomError(404, "존재하지 않는 유저입니다");
 
-  // 입력된 비밀번호와 저장된 비밀번호 비교
   if (!(await bcrypt.compare(password, user.password)))
     throw new CustomError(400, "비밀번호가 일치하지 않습니다");
 
-  // 사용자의 닉네임을 사용하여 토큰 생성
   const accessToken = await createAccessToken(nickname);
   const refreshToken = await createRefreshToken(nickname);
 
   // userRepository를 사용하여 리프레시 토큰 업데이트
   await userRepository.updateToken(nickname, refreshToken);
 
-  // 로그인 결과 및 생성된 토큰을 포함한 객체 반환
   return {
     data: {
       Token: jwt.verify(accessToken, process.env.SECRET_KEY),
       user: {
         id: user.id,
-        name: user.name,
+        nickname: user.nickname,
         email: user.email,
         createdAt: user.createdAt,
       },
@@ -122,10 +118,8 @@ const reCreateAccessToken = async (refreshToken) => {
   if (!user || refreshToken !== user.refreshToken)
     throw new CustomError(401, "리프레쉬 토큰 인증에 실패하였습니다");
 
-  // 새로운 액세스 토큰 생성
-  const accessToken = jwt.sign({ nickname: nickname }, process.env.SECRET_KEY, {
-    expiresIn: 3600,
-  });
+  const accessToken = createAccessToken(nickname);
+
   return accessToken;
 };
 /**
@@ -136,15 +130,17 @@ const reCreateAccessToken = async (refreshToken) => {
  * @returns {Promise<Object>} - 사용자 정보를 포함한 객체를 반환.
  * @throws {CustomError} - 해당 사용자가 존재하지 않는 경우 예외를 throw 함.
  */
-const getUserById = async (userId) => {
-   // userRepository를 사용하여 주어진 사용자 ID로 사용자 정보 가져오기
-  const user = await userRepository.getUserById(userId);
-   // 사용자가 존재하지 않으면 예외를 throw
+const findUserById = async (userId) => {
+
+  // userRepository를 사용하여 주어진 사용자 ID로 사용자 정보 가져오기
+  const user = await userRepository.findUserByField("userId", +userId);
+
+  // 사용자가 존재하지 않으면 예외를 throw
   if (!user) throw new CustomError(403, "해당 유저가 존재하지 않습니다");
 
   return {
     id: user.id,
-    name: user.name,
+    nickname: user.nickname,
     email: user.email,
     avatarUrl: user.avatarUrl,
     githubUrl: user.githubUrl,
@@ -200,7 +196,7 @@ const updateUserInfo = async (
   userId,
   userInfoId
 ) => {
-   // 사용자 권한 확인: 현재 로그인한 사용자의 정보 ID와 업데이트 대상 사용자의 ID 비교
+  // 사용자 권한 확인: 현재 로그인한 사용자의 정보 ID와 업데이트 대상 사용자의 ID 비교
   if (userInfoId !== +userId) throw new CustomError(403, "권한이 없습니다");
 
   // userRepository를 사용하여 사용자 정보 업데이트
@@ -211,10 +207,10 @@ const updateUserInfo = async (
     linkedinUrl,
     userId
   );
-    
+
   return {
     id: userInfo.id,
-    name: userInfo.name,
+    nickname: userInfo.nickname,
     email: userInfo.email,
     avatarUrl: userInfo.avatarUrl,
     githubUrl: userInfo.githubUrl,
@@ -231,7 +227,6 @@ const updateUserInfo = async (
  * @returns {Promise<Array>} - 좋아요한 프로젝트 정보를 포함한 배열을 반환.
  */
 const getUserLikedProject = async (userId) => {
-
   // userRepository를 사용하여 특정 사용자가 좋아요한 프로젝트 목록을 가져옴
   const projects = await userRepository.getUserLikedProject(userId);
 
@@ -261,7 +256,7 @@ export const userService = {
   findUserByNickname,
   signUp,
   login,
-  getUserById,
+  findUserById,
   getProjectByUserId,
   getUserLikedProject,
   updateUserInfo,
