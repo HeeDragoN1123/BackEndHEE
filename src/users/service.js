@@ -1,5 +1,5 @@
 import { CustomError } from "../errors/customError.js";
-import { createAccessToken, createRefreshToken } from "../middlewares/auth.js";
+import { createAccessToken, createRefreshToken } from "../middlewares/auth/auth.js";
 import { UserRepository } from "./repository.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

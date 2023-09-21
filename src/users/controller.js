@@ -1,6 +1,6 @@
 import { UserService } from "./service.js";
 import { signUpSchema, loginSchema } from "../utils/joi/index.js";
-import { createAccessToken, createRefreshToken } from "../middlewares/auth.js";
+import { createAccessToken, createRefreshToken } from "../middlewares/auth/auth.js";
 
 export class UserController {
   userService = new UserService();

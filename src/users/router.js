@@ -1,6 +1,7 @@
 import express from "express";
 import { UserController } from "./controller.js";
-import { validateAccessToken } from "../middlewares/auth.js";
+import { validateAccessToken } from "../middlewares/auth/auth.js";
+import { emailAuth, verifyToken } from "../middlewares/auth/auth.email.js";
 
 const router = express.Router();
 const userController = new UserController();
@@ -25,6 +26,11 @@ router.get("/:userId/like", validateAccessToken, userController.getUserLikedProj
 
 /* 액세스 토큰 재발급 API */
 router.get("/token", userController.token)
+
+/* 이메일 인증 API */
+router.post("/emailCheck", emailAuth)
+
+router.get("/verifyLink", verifyToken)
 
 
 
