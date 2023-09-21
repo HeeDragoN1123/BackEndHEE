@@ -11,7 +11,7 @@ const signUpSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
-  name: Joi.string().min(3).required(),
+  nickname: Joi.string().min(3).required(),
   password: Joi.string().pattern(re_password).required(),
 });
 
