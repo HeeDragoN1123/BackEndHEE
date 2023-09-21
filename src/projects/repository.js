@@ -191,9 +191,8 @@ getProjectPage = async(page, perPage) =>{
       },
       skip : (page -2) *perPage, //이전페이지의 마지막 항목을 가져옴
     });
-
     if(previousPage.length >0) {
-      cursor.id = previousPage[previousPage.length =1].id; //마지막 항목id 를 cursor.id에 설정
+      cursor.id = previousPage[previousPage.length -1].id; //마지막 항목id 를 cursor.id에 설정
     }
   }
 
