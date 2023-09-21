@@ -20,6 +20,9 @@ router.post('/', validateAccessToken, projectController.createProject);
 // /* 게시글 목록 조회 */
 router.get('/', projectController.getProject)
 
+ /* 페이지네이션 */
+ router.get('/page', projectController.getProjectPage)
+
 /* 게시글 상세 조회 */
 router.get('/:projectId', projectController.getProjectById)
 
@@ -32,5 +35,7 @@ router.delete('/:projectId', validateAccessToken, projectController.deleteProjec
 
 /* 카테고리별 게시글 조회 */
 router.get("/category/:categoryId", projectController.getProjectByCategory)
+
+
 
 export default router;

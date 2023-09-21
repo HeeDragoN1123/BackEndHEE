@@ -35,7 +35,6 @@ getLikeById = async (userId) => {
 }
 
 
-//서비스에 deleteLike 메서드가 없음. 
 updateLike = async (projectId,  userId ) => {
 
 

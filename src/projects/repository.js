@@ -69,6 +69,7 @@ export class ProjectRepository {
         id: true,
         title: true,
         image: true,
+
         category: true,
         createdAt: true,
         users: {
@@ -155,4 +156,57 @@ export class ProjectRepository {
 
     return project;
   };
+
+
+
+  // /* 페이지네이션 */
+  // getProjectPage = async (page, perPage) => {
+  //   const paginate = await this.prisma.projects.findMany({
+  //     skip: (page - 1) * perPage,
+  //     take: perPage,
+  //     orderBy: {
+  //       createdAt: 'desc',
+  //     },
+  //   });
+  //   return paginate;
+  // }
+
+
+
+  /* 페이지네이션 */
+getProjectPage = async(page, perPage) =>{
+  const cursor ={
+    id : null,
+  };
+  // 첫번째페이지가 아닌 경우 
+  if (page >1){
+    // 이전 페이지에서 가져온 마지막 항목의 id 설정
+    const previousPage = await this.prisma.projects.findMany({
+      take: perPage,  //페이지당 항목수 지정
+      orderBy: {
+        createdAt : 'desc'  //생성 시간의 내림차순 정렬
+      },
+      select : {
+        id : true,  
+      },
+      skip : (page -2) *perPage, //이전페이지의 마지막 항목을 가져옴
+    });
+
+    if(previousPage.length >0) {
+      cursor.id = previousPage[previousPage.length =1].id; //마지막 항목id 를 cursor.id에 설정
+    }
+  }
+
+  //현재 페이지의 데이터 가져오기
+  const currnetPage = await this.prisma.projects.findMany({
+    take: perPage,
+    cursor : cursor.id ? {id : cursor.id} : undefined,  //cursor.id가 있으면 가져오고 없으면 undefined
+
+    orderBy: {
+      createdAt: 'desc', 
+    },
+  })
+  return currnetPage
+ }
+
 }
