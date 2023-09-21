@@ -18,9 +18,9 @@ const smtpTransport = nodemailer.createTransport({
 
 const createEmailVerifyTokne = (email) => {
   const token = jwt.sign({ name: email }, process.env.PRIVATE_KEY, {
-    expiresIn: "1h",
+    expiresIn: "7d",
   });
-  console.log(token);
+  
   return token;
 };
 
@@ -33,9 +33,9 @@ const emailAuth = async (req, res) => {
     from: "ehdxka3@naver.com ",
     to: email,
     subject: " 인증 관련 메일 입니다. ",
-    html: `<p>Please click the following link to verify your email address:</p>
-    <p> <a href="http://localhost:8080/verifyLink/?email=${email}?token=${token}">Verify email</a></p>
-    <p>This link will expire on ${token.expiresIn}.</p>`,
+    html: `<h3>링크를 클릭해서 이메일을 인증하세요</h3>
+    <h3> <a href="http://localhost:8080/verifyLink/?email=${email}?token=${token}">이메일 인증하기</a></h3>
+    <h3>1시간 뒤 링크가 만료됩니다</h3>`,
   };
   smtpTransport.sendMail(mailOptions, (err, response) => {
     console.log("response", response);
@@ -57,9 +57,7 @@ const emailAuth = async (req, res) => {
 
 const verifyToken = async (req, res) => {
   const token = req.query.token;
-  const email = req.query.email;
-  console.log("email", email);
-  console.log("token", token);
+
   const answer = validateToken(token, process.env.PRIVATE_KEY);
 
   if (answer) {

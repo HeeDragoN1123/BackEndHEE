@@ -18,7 +18,7 @@ router.get("/user/:userId", validateAccessToken, userController.getUserInfo);
 router.get(
   "/user/:userId/project",
   validateAccessToken,
-  userController.getPost
+  userController.getProjectByUserId
 );
 
 /* 유저 정보 수정 API */
