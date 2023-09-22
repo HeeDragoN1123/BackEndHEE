@@ -1,6 +1,7 @@
 import { CustomError } from "../errors/customError.js";
 import { createAccessToken, createRefreshToken } from "../middlewares/auth.js";
 import { userRepository } from "./repository.js";
+import passport from "passport";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -131,7 +132,6 @@ const reCreateAccessToken = async (refreshToken) => {
  * @throws {CustomError} - 해당 사용자가 존재하지 않는 경우 예외를 throw 함.
  */
 const findUserById = async (userId) => {
-
   // userRepository를 사용하여 주어진 사용자 ID로 사용자 정보 가져오기
   const user = await userRepository.findUserByField("userId", +userId);
 
@@ -251,6 +251,18 @@ const getUserLikedProject = async (userId) => {
   return project;
 };
 
+const googleLogin = async (req, res, next, method) => {
+  console.log(method)
+  passport.authenticate(method, async function (err, user, info) {
+    console.log("user", user)
+    const googleUser = await userRepository.googleAuth(user, method);
+    console.log("googleUser", googleUser);
+
+    const accessToken = createAccessToken(googleUser.email)
+    return res.status(200).json(accessToken);
+  })(req, res, next);
+};
+
 export const userService = {
   findUserByEmail,
   findUserByNickname,
@@ -261,4 +273,5 @@ export const userService = {
   getUserLikedProject,
   updateUserInfo,
   reCreateAccessToken,
+  googleLogin,
 };

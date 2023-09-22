@@ -184,6 +184,21 @@ const updateIsEmailVerified = async (email) => {
   return user.isEmailVerified
 }
 
+const googleAuth = async (user, method) => {
+  const googleuser = await prisma.users.create({
+    data: {
+      name: user.emails[0].value,
+      nickname: user.displayName,
+      email: user.emails[0].value,
+      password: user.emails[0].value
+    },
+  });
+
+  return googleuser
+}
+
+
+
 export const userRepository = {
   signUp,
   findUserByField,
@@ -192,5 +207,6 @@ export const userRepository = {
   validateToken,
   updateUserInfo,
   updateToken,
-  updateIsEmailVerified
+  updateIsEmailVerified,
+  googleAuth
 };
