@@ -55,4 +55,7 @@ router.get(
   }
 );
 
+/* 로그아웃 */
+router.get('/logout',userController.logout)
+
 export default router;
