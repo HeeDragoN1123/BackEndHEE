@@ -17,7 +17,9 @@ model Users {
   name        String    
   nickname    String    @unique 
   email       String    @unique 
-  password    String    
+  password    String
+  snsId       String?    
+  provider    String?
   isEmailVerified Boolean @default(false)
   avatarUrl   String?   @default("https://cdn.dribbble.com/assets/avatar-default-e370af14535cdbf137637a27ee1a8e451253edc80be429050bc29d59b1f7cda0.gif") 
   description String?    
