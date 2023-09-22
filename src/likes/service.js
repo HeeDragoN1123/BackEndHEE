@@ -1,5 +1,6 @@
 import { CustomError } from "../errors/customError.js";
 
+
 export class LikeService {
   constructor(likeRepository) {
     this.likeRepository = likeRepository;
@@ -13,14 +14,17 @@ export class LikeService {
     return project;
   };
 
+
   getLikeById = async (userId) => {
     const like = await this.likeRepository.getLikeById(userId);
 
     return like;
   };
 
+
   updateLike = async (projectId, userId) => {
     let isLike = await this.likeRepository.isLikeExist(projectId, userId);
+
 
     if (!isLike) {
       await this.likeRepository.addBookmark(projectId, userId);
@@ -31,3 +35,4 @@ export class LikeService {
     return isLike;
   };
 }
+

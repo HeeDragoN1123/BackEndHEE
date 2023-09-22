@@ -1,3 +1,4 @@
+
 import { prisma } from "../utils/prisma/index.js";
 
 export class BookmarkRepository {
@@ -68,3 +69,4 @@ export class BookmarkRepository {
     return projects;
   };
 }
+

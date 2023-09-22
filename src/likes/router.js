@@ -7,7 +7,6 @@ import { validateAccessToken } from '../middlewares/auth.js'
 
 const router = express.Router();
 
-// const likeController = new LikeController()
 
 // 인스턴스 생성
 const likeRepository = new LikeRepository(prisma);

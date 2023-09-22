@@ -1,3 +1,4 @@
+
 export class LikeController {
   constructor(likeService) {
     this.likeService = likeService;
@@ -5,6 +6,7 @@ export class LikeController {
 
   /* 좋아요 조회 */
   getLike = async (req, res, next) => {
+
     try {
       const { projectId } = req.params;
       const userId = req.user.id;
