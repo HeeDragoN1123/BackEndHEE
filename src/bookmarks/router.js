@@ -1,28 +1,17 @@
-import express from 'express'
-import {prisma} from '../utils/prisma/index.js';
-import {BookmarkController} from './controller.js'
-import {BookmarkService} from './service.js'
-import {BookmarkRepository} from './repository.js'
-import { validateAccessToken } from '../middlewares/auth.js'
 
+import { validateAccessToken } from "../middlewares/auth.js";
+import { BookmarkController } from "./controller.js";
+import express from "express"
 
-const router = express.Router();
+const router = express.Router()
 
+const bookmarkController = new BookmarkController()
 
-// 인스턴스 생성
-const bookmarkRepository = new BookmarkRepository(prisma);
-const bookmarkService = new BookmarkService(bookmarkRepository)
-const bookmarkController = new BookmarkController(bookmarkService);
+/* 북마크 기능 */
+router.put("/:projectId/bookmark", validateAccessToken, bookmarkController.updateBookmark)
 
-
-/* 북마크 조회 */
-router.get('/:projectId/bookmark', validateAccessToken, bookmarkController.getBookmark)
-
-
-
-/* 북마크 업데이트 */
-router.put('/:projectId/bookmark', validateAccessToken, bookmarkController.updateBookmark)
-
-
+/* 북마크한 프로젝트 조회 */
+router.get("/:userId/bookmark", validateAccessToken, bookmarkController.getUserBookmarkedProject)
 
 export default router
+

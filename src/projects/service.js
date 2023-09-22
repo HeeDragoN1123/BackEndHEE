@@ -7,7 +7,6 @@ export class ProjectService {
     this.projectRepository = projectRepository;
   }
 
-
   /* 프로젝트 생성 */
   createProject = async (
     title,

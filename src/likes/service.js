@@ -1,54 +1,38 @@
-
-export class LikeService{
-  constructor(likeRepository){
-      this.likeRepository = likeRepository
-      }
+import { CustomError } from "../errors/customError.js";
 
 
-findProjectById = async (projectId) =>{
-  const like = await this.likeRepository.findProjectById(projectId); 
-  return like
-};
+export class LikeService {
+  constructor(likeRepository) {
+    this.likeRepository = likeRepository;
+  }
 
-getLikeById = async (userId) => {
-  const likes = await this.likeRepository.getLikeById(userId);
-  
-  const likeCount = likes.map((item) => {
-      return {
-        id: item.id,
-        title: item.title,
-        thumbnail: item.image,
-        category: item.category,
-        viewCount: item._count.viewsLogs,
-        likeCount: item._count.likes,
-        bookmarkCount: item._count.bookmarks,
-        createdAt: item.createdAt,
-        authour: {
-          id: item.users.id,
-          username: item.users.name,
-          avatarUrl: item.users.avatarUrl,
-        },
-      };
-    });
+  findProjectById = async (projectId) => {
+    const project = await this.likeRepository.findProjectById(projectId);
 
- return likeCount
+    if (!project) throw new CustomError(404, "해당 게시글이 존재하지 않습니다")
+
+    return project;
+  };
+
+
+  getLikeById = async (userId) => {
+    const like = await this.likeRepository.getLikeById(userId);
+
+    return like;
+  };
+
+
+  updateLike = async (projectId, userId) => {
+    let isLike = await this.likeRepository.isLikeExist(projectId, userId);
+
+
+    if (!isLike) {
+      await this.likeRepository.addBookmark(projectId, userId);
+    } else {
+      await this.likeRepository.deleteBookmark(isLike.id);
+    }
+
+    return isLike;
+  };
 }
 
-
-updateLike = async (projectId,  userId ) => {
-
-
-let isLike = await this.likeRepository.isLike(projectId, userId);
-
-
-if(!isLike) {
-  await this.likeRepository.addLike(projectId, userId)
-}else{
-  await this.likeRepository.deleteLike(isLike.id)  //LikeId
-}
-
-  return isLike;
-};
-
-
-}

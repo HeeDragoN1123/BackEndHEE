@@ -45,7 +45,12 @@ export class ProjectRepository {
             avatarUrl: true,
           },
         },
-        _count: {
+        likes: {
+          select: {
+            userId: userId
+          }
+        },
+        _count: { 
           select: {
             likes: true,
             viewsLogs: true,
