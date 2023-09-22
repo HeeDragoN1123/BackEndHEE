@@ -1,3 +1,4 @@
+
 import { validateAccessToken } from "../middlewares/auth.js";
 import { BookmarkController } from "./controller.js";
 import express from "express"
@@ -13,3 +14,4 @@ router.put("/:projectId/bookmark", validateAccessToken, bookmarkController.updat
 router.get("/:userId/bookmark", validateAccessToken, bookmarkController.getUserBookmarkedProject)
 
 export default router
+

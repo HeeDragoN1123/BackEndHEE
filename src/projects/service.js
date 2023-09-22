@@ -132,6 +132,19 @@ export class ProjectService {
 
     return project;
   };
+
+/* 페이지네이션 */
+getProjectPage = async(page, perPage) => {
+// 현재 페이지에 표시할 게시글
+const projects = await this.projectRepository.getProjectPage(page, perPage)
+
+// 전체 게시글
+const totalProjectsCount = await this.projectRepository.getProject();
+
+return projects
+
+}
+
 }
 
 

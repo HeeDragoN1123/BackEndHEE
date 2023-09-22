@@ -101,4 +101,35 @@ export class ProjectController {
       next(err);
     }
   };
+
+/* 페이지네이션 */
+getProjectPage = async(req,res,next) => {
+  try{
+    const page = parseInt(req.query.page) || 1; // 현재 페이지
+    const perPage = parseInt(req.query.perPage) || 20; // 페이지당 항목 수
+  
+    // 데이터베이스에서 게시글 전체목록 가져오기 
+    const totalProjectsCount = await this.projectService.getProject();
+    
+    // 현재 페이지에 표시할 게시글만 추출
+    const paginatedProjects = await this.projectService.getProjectPage(page, perPage);
+    
+    /* http 응답 헤더에 데이터 추가 */
+    res.setHeader('total', totalProjectsCount.length);
+    res.setHeader('page', page);
+    res.setHeader('perPage', perPage);
+  
+   return res.status(200).json({
+      // total: totalProjectsCount.length, // 전체 게시글 숫자
+      // page: page,
+      // perPage: perPage,
+      data: paginatedProjects,
+    });
+  }catch(err){
+    next(err);
+  }
+
+  
+}
+
 }

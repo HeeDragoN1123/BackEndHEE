@@ -1,3 +1,4 @@
+
 import { BookmarkService } from "./servics.js";
 
 export class BookmarkController {
@@ -36,3 +37,4 @@ export class BookmarkController {
     }
   };
 }
+
