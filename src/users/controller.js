@@ -165,6 +165,10 @@ const getUserLikedProject = asyncHandler(async (req, res) => {
   return res.status(200).json(projects);
 });
 
+const googleLogin = asyncHandler(async (req, res, next)=>{
+  await userService.googleLogin(req, res, next, 'google')
+})
+
 export const userController = {
   login,
   signUp,
@@ -173,4 +177,5 @@ export const userController = {
   getProjectByUserId,
   updateUserInfo,
   getUserLikedProject,
+  googleLogin
 };
