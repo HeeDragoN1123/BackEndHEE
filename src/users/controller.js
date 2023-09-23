@@ -169,6 +169,38 @@ const googleLogin = asyncHandler(async (req, res, next)=>{
   await userService.googleLogin(req, res, next, 'google')
 })
 
+
+/* 로그아웃 */
+const logout =  asyncHandler(async (req, res) => {
+  // 세션 파기 (로그아웃)
+  req.logout(() => {
+    // 쿠키 클리어
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+
+    // 로그아웃 후 리다이렉트 또는 응답
+    res.redirect('/'); // 로그아웃 후 홈페이지로 리다이렉트
+  });
+});
+
+// const logout = asyncHandler(async (req, res) => {
+//   // 세션 파기 (로그아웃)
+//   req.logout(()=>{
+//   // 쿠키 클리어
+//   res.clearCookie('accessToken');
+//   res.clearCookie('refreshToken');
+
+//   // 로그아웃 후 구글 로그아웃 URL을 생성
+//   const googleLogoutURL = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${process.env.GOOGLE_REDIRECT_URL}`;
+
+//   // 구글 로그아웃 페이지로 리다이렉트
+//   res.redirect(googleLogoutURL);
+
+// });
+//   });
+
+
+
 export const userController = {
   login,
   signUp,
@@ -177,5 +209,6 @@ export const userController = {
   getProjectByUserId,
   updateUserInfo,
   getUserLikedProject,
-  googleLogin
+  googleLogin,
+  logout
 };
